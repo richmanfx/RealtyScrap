@@ -41,13 +41,37 @@ public class RentalPage {
 
         sleep(5000);        // AJAX не успевает отрисовать что-то
         $(By.xpath(propertyTypeImgXpath)).click();
-        log.info("Книжка кликнута");
-
         $(By.xpath("//span[text()='Выберите один или несколько типов имущества']")).should(visible);
 
         // Чекбокс
         String checkBoxXpath = String.format("//td/span[text()='%s']/preceding-sibling::input", propertyType);
         $(By.xpath(checkBoxXpath)).click();
+
+        // Кнопка "Выбрать"
+        String buttonXpath = "//ins[text()='Выбрать']";
+        $(By.xpath(buttonXpath)).click();
+
+
+    }
+
+    /**
+     * Указать вид договора
+     * @param contractType Вид договора
+     */
+    public void setContractType(String contractType) {
+
+        // Кнопка с картинкой книги
+        String contractTypeImgXpath = "//td/label[text()='Вид договора:']/../" +
+                "following-sibling::td[1]//table//tr/td/a[@title='Выбрать']/img";
+        $(By.xpath(contractTypeImgXpath)).click();
+
+        // Чекбокс
+        String checkBoxXpath = String.format("//td/span[text()='%s']/preceding-sibling::input", contractType);
+        $(By.xpath(checkBoxXpath)).click();
+
+        // Кнопка "Выбрать"
+        String buttonXpath = "//ins[text()='Выбрать']";     // TODO: Вынести в отдельный метод
+        $(By.xpath(buttonXpath)).click();
 
     }
 }

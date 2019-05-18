@@ -27,9 +27,10 @@ class Scraping {
         String propertyType = "Помещение";  // TODO: вынести в конфиг
         rentalPage.setAuctionType(propertyType);
 
-//        // Указать вид договора
-//        rentalPage.setContractType(settings);
-//
+        // Указать вид договора
+        String contractType = "Договор аренды";
+        rentalPage.setContractType(contractType);
+
 //        // Указать страну
 //        rentalPage.setCountry();
 //
