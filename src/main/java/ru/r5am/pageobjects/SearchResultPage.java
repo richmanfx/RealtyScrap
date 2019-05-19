@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.Condition.visible;
 
 
@@ -27,6 +28,22 @@ public class SearchResultPage {
         }
 
         return result;
+
+    }
+
+    /**
+     * Определить количество найденных лотов
+     * @return Количество лотов
+     */
+    public int getLotsQuantity() {
+
+        // Тупо ждём результатов поиска - AJAX-ом только данные в таблице измненются
+        int searchWaitTime = 5;     // Секунды
+        sleep(searchWaitTime * 1000);
+
+        String xpath = "//h2/span[contains(text(),'найдено лотов')]";
+        String[] strings = $(By.xpath(xpath)).text().split(" ");
+        return Integer.parseInt(strings[strings.length - 1]);
 
     }
 }

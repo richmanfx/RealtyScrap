@@ -23,7 +23,7 @@ public class RealtyScrap {
         open(appConfig.scrapUrl());
         log.debug("Сайт открыт");
 
-        log.debug("Начать скрапинг");
+        log.debug("Начали скрапинг");
         scrap();
 
         log.debug("");

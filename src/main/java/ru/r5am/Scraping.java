@@ -15,8 +15,21 @@ class Scraping {
     static void scrap() {
 
         setSearchFilters();     // Выставить фильтры поиска
-
         search();        // Искать
+
+        // Определить количество найденных объектов
+        int quantity = getObjectsQuantity();
+        log.info("Количество найденных объектов: {}", quantity);
+
+    }
+
+    /**
+     * Определить количество найденных объектов
+     * @return Количество объектов
+     */
+    private static int getObjectsQuantity() {
+
+        return new SearchResultPage().getLotsQuantity();
 
     }
 
