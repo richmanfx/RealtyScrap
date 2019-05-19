@@ -31,12 +31,13 @@ class Scraping {
         String contractType = "Договор аренды";
         rentalPage.setContractType(contractType);
 
-//        // Указать страну
-//        rentalPage.setCountry();
-//
-//        // Указать местоположение имущества
-//        rentalPage.setPropertyLocation(settings);
-//
+        // Указать страну
+        rentalPage.setCountry();
+
+        // Указать местоположение имущества
+        String PropertyLocation = "Москва (г)";   // TODO: вынести в конфиг
+        rentalPage.setPropertyLocation(PropertyLocation);
+
 //        // Указать диапазон площади объекта
 //        rentalPage.setObjectAreaRange(settings);
 //

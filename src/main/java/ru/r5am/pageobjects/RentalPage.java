@@ -62,7 +62,7 @@ public class RentalPage {
 
         // Кнопка с картинкой книги
         String contractTypeImgXpath = "//td/label[text()='Вид договора:']/../" +
-                "following-sibling::td[1]//table//tr/td/a[@title='Выбрать']/img";
+                                      "following-sibling::td[1]//table//tr/td/a[@title='Выбрать']/img";
         $(By.xpath(contractTypeImgXpath)).click();
 
         // Чекбокс
@@ -73,5 +73,37 @@ public class RentalPage {
         String buttonXpath = "//ins[text()='Выбрать']";     // TODO: Вынести в отдельный метод
         $(By.xpath(buttonXpath)).click();
 
+    }
+
+    /**
+     * Указать страну
+     */
+    public void setCountry() {
+
+        String labelSelectCountryXpath = "//label[text()='Страна размещения:']";
+        $(By.xpath(labelSelectCountryXpath)).click();
+
+        String selectCountryXpath = "//option[@title='РОССИЯ']";
+        $(By.xpath(selectCountryXpath)).click();
+
+    }
+
+    /**
+     * Указать местоположение имущества
+     * @param propertyLocation Субъект РФ
+     */
+    public void setPropertyLocation(String propertyLocation) {
+        String locationImgXpath = "//td/label[text()='Местоположение:']/.." +
+                                  "/following-sibling::td[1]//table//tr/td/a[@title='Выбрать']/img";
+        sleep(5000);        // AJAX не успевает отрисовать что-то
+        $(By.xpath(locationImgXpath)).click();
+
+        // Субъект РФ
+        String fieldXpath = "//input[@name='container1:level1']";
+        $(By.xpath(fieldXpath)).sendKeys(propertyLocation);
+
+        // Кнопка "Выбрать"
+        String buttonXpath = "//ins[text()='Выбрать']";     // TODO: Вынести в отдельный метод
+        $(By.xpath(buttonXpath)).click();
     }
 }

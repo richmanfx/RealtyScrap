@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static ru.r5am.Scraping.scrap;
 import static ru.r5am.SelenideSetUp.appConfig;
 
+
 public class RealtyScrap {
 
     private static final Logger log = LogManager.getRootLogger();
