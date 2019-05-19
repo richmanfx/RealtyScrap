@@ -15,6 +15,7 @@ public class SearchResultPage {
 
     private static final Logger log = LogManager.getRootLogger();
     private String 	realObjectXpath = "//div[@class='scrollx']/table//tr[contains(@class,'datarow')]";
+    private String nextPageXpath = "//a[@title='Перейти на одну страницу вперед']";
 
     // Проверить отобразились ли лоты по объектам после поиска
     public boolean isObjectsShow() {
@@ -111,5 +112,26 @@ public class SearchResultPage {
             webLinks.add(link.getAttribute("href"));
         }
         return webLinks;
+    }
+
+    /**
+     * Проверить существует ли следующая страница
+     * @return true - страница существует, иначе - false
+     */
+    public boolean existNextPage() {
+        boolean result = false;
+        if($$(By.xpath(nextPageXpath)).size() > 0) {
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * Перейти на следующую страницу - пагинация
+     */
+    public void goToNextPage() {
+
+        $(By.xpath(nextPageXpath)).click();
+        sleep(3000);        // TODO: Возможно время можно сократить
     }
 }

@@ -13,6 +13,7 @@ import ru.r5am.pageobjects.SearchResultPage;
 class Scraping {
 
     private static final Logger log = LogManager.getRootLogger();
+    private static ArrayList<ObjectInfo> allObjectsInfo = new ArrayList<>();
 
     static void scrap() {
 
@@ -26,6 +27,8 @@ class Scraping {
         // Собрать информацию по объектам на всех страницах
         getAllObjectsInfo();
 
+        log.info("Всего обработано объектов: {}", allObjectsInfo.size());
+
     }
 
     /**
@@ -33,32 +36,33 @@ class Scraping {
      */
     private static void getAllObjectsInfo() {
 
+        SearchResultPage searchResultPage = new SearchResultPage();
+
         // Собрать иформацию об объектах на текущей странице
         ArrayList<ObjectInfo> objectsInfo = getOnePageObjectsInfo();
-        for(ObjectInfo object: objectsInfo)
-        log.info(object.notificationNumber + " / " +
-                 object.area + " / " +
-                 object.monthlyRental + " / " +
-                 object.rentalPeriod + " / " +
-                 object.webLink
-        );
+
+//        for(ObjectInfo object: objectsInfo)
+//        log.info(object.notificationNumber + " / " +
+//                 object.area + " / " +
+//                 object.monthlyRental + " / " +
+//                 object.rentalPeriod + " / " +
+//                 object.webLink
+//        );
 
         // Добавить к основной коллекци
-
+        allObjectsInfo.addAll(objectsInfo);
 
         // Есть ли следующая страница
+        boolean nextPageExist = searchResultPage.existNextPage();
 
+        if(nextPageExist) { // Условие выхода из рекурсии - нет следующей страницы
+            // Перейти на следующую страницу
+            searchResultPage.goToNextPage();
 
-//        if len(nextPage) < 1 { // Условие выхода из рекурсии - нет следующей страницы
-//            // Выходим
-//            return
-//        } else {
-//            // Перейти на следующую страницу
-//            pageobjects.GoToNextPage(webDriver)
-//
-//            // Рекурсия
-//            ObjectInfoCollect(webDriver)
-//        }
+            // Рекурсия
+            getAllObjectsInfo();
+        }
+
     }
 
     /**

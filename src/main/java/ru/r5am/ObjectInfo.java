@@ -6,7 +6,6 @@ import lombok.Setter;
 
 
 class ObjectInfo {
-
     @Getter @Setter String  notificationNumber;         // Номер извещения
     @Getter @Setter String  address;                    // Адрес
     @Getter @Setter String  area;                       // Площадь, кв.м
@@ -16,5 +15,4 @@ class ObjectInfo {
     @Getter @Setter String  auctionData;                // Дата проведения аукциона
     @Getter @Setter String  closingApplicationsDate;    // Дата окончания подачи заявок
     @Getter @Setter String  guaranteeAmount;            // Информация про залог
-
 }
