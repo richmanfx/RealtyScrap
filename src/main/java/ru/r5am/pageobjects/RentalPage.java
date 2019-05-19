@@ -121,5 +121,24 @@ public class RentalPage {
         $(By.xpath(maxFieldXpath)).sendKeys(Integer.toString(maxArea));
     }
 
+    /**
+     * Указать минимальный срок аренды
+     * @param minRentalPeriod Срок аренды в годах
+     */
+    public void setRentalPeriod(int minRentalPeriod) {
 
+        String fieldXpath = "//input[@name='extended:propertyExtended:stringRentFrom']";
+        $(By.xpath(fieldXpath)).sendKeys(Integer.toString(minRentalPeriod * 12));       // В месяцах
+
+    }
+
+    /**
+     * Кликнуть на кнопке поиска
+     */
+    public void searchButtonClick() {
+
+        String buttonXpath = "//ins[@id='lot_search']";
+        $(By.xpath(buttonXpath)).click();
+
+    }
 }

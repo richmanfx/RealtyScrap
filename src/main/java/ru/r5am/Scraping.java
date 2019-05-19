@@ -1,12 +1,22 @@
 package ru.r5am;
 
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import ru.r5am.pageobjects.RentalPage;
+import ru.r5am.pageobjects.SearchResultPage;
+
 
 class Scraping {
+
+    private static final Logger log = LogManager.getRootLogger();
 
     static void scrap() {
 
         setSearchFilters();     // Выставить фильтры поиска
+
+        search();        // Искать
 
     }
 
@@ -43,7 +53,26 @@ class Scraping {
         int maxArea = 75;
         rentalPage.setObjectAreaRange(minArea, maxArea);
 
-//        // Указать минимальный срок аренды
-//        rentalPage.setRentalPeriod(settings);
+        // Указать минимальный срок аренды
+        int minRentalPeriod = 5;        // TODO: вынести в конфиг
+        rentalPage.setRentalPeriod(minRentalPeriod);
+    }
+
+    /**
+     * Выполнить поиск объектов
+     */
+    private static void search() {
+
+        RentalPage rentalPage = new RentalPage();
+        SearchResultPage searchResultPage = new SearchResultPage();
+
+        // Начать поиск
+        rentalPage.searchButtonClick();
+
+        // Дождаться отображения объектов
+        boolean show = searchResultPage.isObjectsShow();
+        if(!show) {
+            log.info("Объекты не нашлись");
+        }
     }
 }
