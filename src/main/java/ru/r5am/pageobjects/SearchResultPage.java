@@ -1,17 +1,20 @@
 package ru.r5am.pageobjects;
 
 
+import java.util.*;
 import org.openqa.selenium.By;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
+import com.codeborne.selenide.SelenideElement;
+import static com.codeborne.selenide.Selenide.*;
+import com.codeborne.selenide.ElementsCollection;
 import static com.codeborne.selenide.Condition.visible;
 
 
 public class SearchResultPage {
 
     private static final Logger log = LogManager.getRootLogger();
+    private String 	realObjectXpath = "//div[@class='scrollx']/table//tr[contains(@class,'datarow')]";
 
     // Проверить отобразились ли лоты по объектам после поиска
     public boolean isObjectsShow() {
@@ -45,5 +48,68 @@ public class SearchResultPage {
         String[] strings = $(By.xpath(xpath)).text().split(" ");
         return Integer.parseInt(strings[strings.length - 1]);
 
+    }
+
+    /**
+     * Вернуть количество объектов на данной странице
+     * @return Количество объектов
+     */
+    public int getLotsOnPage() {
+        return $$(By.xpath(realObjectXpath)).size();
+    }
+
+    /**
+     * Получить список параметров объектов на странице по заданному Xpath
+     * @param xpath Xpath параметра
+     * @return Список параметров
+     */
+    private List<String> getObjectsParameter(String xpath) {
+        return $$(By.xpath(realObjectXpath + xpath)).texts();
+    }
+
+    /**
+     * Получить список ивещений объектов на странице
+     * @return Список извещений
+     */
+    public List<String> getNoticeNumbers() {
+        return getObjectsParameter("/td[3]/span/span[1]");
+    }
+
+    /**
+     * Получить список площадей объектов на странице
+     * @return Список площадей
+     */
+    public List<String> getAreas() {
+        return getObjectsParameter("/td[3]/span/span[4]");
+    }
+
+    /**
+     * Получить список стоимости аренды в месяц для объектов на странице
+     * @return Стоимость аренды в месяц
+     */
+    public List<String> getRents() {
+        return getObjectsParameter("/td[7]/span");
+    }
+
+    /**
+     * Получить список сроков аренды для объектов на странице
+     * @return Сроки аренды
+     */
+    public List<String> getRentalPeriods() {
+        return getObjectsParameter("/td[6]/span/span[2]");
+    }
+
+    /**
+     * Получить список ссылок на страницы объектов на странице
+     * @return Список ссылок
+     */
+    public List<String> getLinks() {
+        ElementsCollection linksElements = $$(By.xpath(realObjectXpath + "/td[1]//a[@title='Просмотр']"));
+        List<String> webLinks = new ArrayList<>();
+
+        for(SelenideElement link: linksElements) {
+            webLinks.add(link.getAttribute("href"));
+        }
+        return webLinks;
     }
 }
