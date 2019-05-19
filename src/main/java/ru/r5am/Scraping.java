@@ -38,9 +38,11 @@ class Scraping {
         String PropertyLocation = "Москва (г)";   // TODO: вынести в конфиг
         rentalPage.setPropertyLocation(PropertyLocation);
 
-//        // Указать диапазон площади объекта
-//        rentalPage.setObjectAreaRange(settings);
-//
+        // Указать диапазон площади объекта
+        int minArea = 10;          // TODO: вынести в конфиг
+        int maxArea = 75;
+        rentalPage.setObjectAreaRange(minArea, maxArea);
+
 //        // Указать минимальный срок аренды
 //        rentalPage.setRentalPeriod(settings);
     }

@@ -106,4 +106,20 @@ public class RentalPage {
         String buttonXpath = "//ins[text()='Выбрать']";     // TODO: Вынести в отдельный метод
         $(By.xpath(buttonXpath)).click();
     }
+
+    /**
+     * Указать диапазон площади объекта
+     * @param minArea Минимальная площадь объекта
+     * @param maxArea Максимальная площадь объекта
+     */
+    public void setObjectAreaRange(int minArea, int maxArea) {
+
+        String minFieldXpath = "//input[@name='extended:areaMeters:stringAreaMetersFrom']";
+        $(By.xpath(minFieldXpath)).sendKeys(Integer.toString(minArea));
+
+        String maxFieldXpath = "//input[@name='extended:areaMeters:stringAreaMetersTo']";
+        $(By.xpath(maxFieldXpath)).sendKeys(Integer.toString(maxArea));
+    }
+
+
 }
