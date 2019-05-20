@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import static com.codeborne.selenide.Selenide.open;
 
 import ru.r5am.pageobjects.RentalPage;
+import ru.r5am.pageobjects.RealtyObjectPage;
 import ru.r5am.pageobjects.SearchResultPage;
 
 
@@ -27,8 +29,41 @@ class Scraping {
         // Собрать информацию по объектам на всех страницах
         getAllObjectsInfo();
 
+        // Собрать дополнительную информацию по каждому объекту
+        getAllObjectAdditionalInfo();
+
         log.info("Всего обработано объектов: {}", allObjectsInfo.size());
 
+    }
+
+    /**
+     * Собрать дополнительную информацию по каждому объекту
+     */
+    private static void getAllObjectAdditionalInfo() {
+
+        RealtyObjectPage realtyObjectPage = new RealtyObjectPage();
+
+        for(int index=0; index < allObjectsInfo.size(); index++) {
+
+            log.info(String.format(
+                    "Всего объектов: '%d', обрабатывается объект: '%d'", allObjectsInfo.size(), index + 1));
+
+            // Перейти на страницу объекта недвижимости
+            open(allObjectsInfo.get(index).webLink);
+
+            // Сумма залога
+            allObjectsInfo.get(index).guaranteeAmount = realtyObjectPage.getDeposit();
+
+            // Адрес
+            allObjectsInfo.get(index).address = realtyObjectPage.getAddress();
+
+
+            //// На закладку "Общие"
+
+            // Дата торгов
+
+            // Дата окончания подачи заявок
+        }
     }
 
     /**
