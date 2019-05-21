@@ -33,4 +33,21 @@ public class RealtyObjectPage {
         String addressXpath = "//label[contains(text(),'Детальное местоположение имущества')]/../../td/span";
         return $(By.xpath(addressXpath)).text();
     }
+
+    /**
+     * Перейти на закладку "Общие"
+     */
+    public void toGeneralTab() {
+        String tabXpath = "//span[text()='Общие']";
+        $(By.xpath(tabXpath)).click();
+    }
+
+    /**
+     * Вернуть дату проведения торгов
+     * @return Дата торгов
+     */
+    public String getAuctionData() {
+        String auctionDateXpath = "//label[contains(text(),'Дата и время проведения аукциона')]/../../td/span";
+        return $(By.xpath(auctionDateXpath)).text();
+    }
 }

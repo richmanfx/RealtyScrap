@@ -57,10 +57,11 @@ class Scraping {
             // Адрес
             allObjectsInfo.get(index).address = realtyObjectPage.getAddress();
 
-
-            //// На закладку "Общие"
+            // На закладку "Общие"
+            realtyObjectPage.toGeneralTab();
 
             // Дата торгов
+            allObjectsInfo.get(index).auctionData = realtyObjectPage.getAuctionData();
 
             // Дата окончания подачи заявок
         }
