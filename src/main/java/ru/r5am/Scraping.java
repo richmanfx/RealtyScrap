@@ -17,7 +17,7 @@ class Scraping {
     private static final Logger log = LogManager.getRootLogger();
     private static ArrayList<ObjectInfo> allObjectsInfo = new ArrayList<>();
 
-    static void scrap() {
+    static ArrayList<ObjectInfo> scrap() {
 
         setSearchFilters();     // Выставить фильтры поиска
         search();        // Искать
@@ -34,6 +34,7 @@ class Scraping {
 
         log.info("Всего обработано объектов: {}", allObjectsInfo.size());
 
+        return allObjectsInfo;
     }
 
     /**
@@ -42,6 +43,8 @@ class Scraping {
     private static void getAllObjectAdditionalInfo() {
 
         RealtyObjectPage realtyObjectPage = new RealtyObjectPage();
+
+        // TODO: Такая идея: Класс результатов большой наследовать от инфо маленького с переносом части данных!
 
         for(int index=0; index < allObjectsInfo.size(); index++) {
 
@@ -64,6 +67,7 @@ class Scraping {
             allObjectsInfo.get(index).auctionData = realtyObjectPage.getAuctionData();
 
             // Дата окончания подачи заявок
+            allObjectsInfo.get(index).closingApplicationsDate = realtyObjectPage.getClosingApplicationsDate();
         }
     }
 
@@ -113,7 +117,6 @@ class Scraping {
         // Количество объектов только на данной странице
         int objectsQuantity = searchResultPage.getLotsOnPage();
 
-
         // Извещения
         List<String> notices = searchResultPage.getNoticeNumbers();
         // Площади объектов
@@ -124,9 +127,6 @@ class Scraping {
         List<String> rentalPeriods = searchResultPage.getRentalPeriods();
         // Ссылка для просмотра
         List<String> links = searchResultPage.getLinks();
-
-
-
 
         for( int index = 0; index < objectsQuantity; index++) {
             ObjectInfo info = new ObjectInfo();

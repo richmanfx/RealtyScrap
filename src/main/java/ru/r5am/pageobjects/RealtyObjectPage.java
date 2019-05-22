@@ -50,4 +50,14 @@ public class RealtyObjectPage {
         String auctionDateXpath = "//label[contains(text(),'Дата и время проведения аукциона')]/../../td/span";
         return $(By.xpath(auctionDateXpath)).text();
     }
+
+    /**
+     * Дата окончания подачи заявок
+     * @return Дата
+     */
+    public String getClosingApplicationsDate() {
+        String closingApplicationsDateXpath = "//label[contains(text(),'Дата окончания подачи заявок')]/../../td/span";
+        return $(By.xpath(closingApplicationsDateXpath)).text();
+    }
+
 }
