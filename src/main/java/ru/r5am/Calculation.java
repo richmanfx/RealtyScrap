@@ -18,8 +18,37 @@ class Calculation {
 
             CalculatedResult calculatedResult = new CalculatedResult();
 
+            // Порядковый номер
+            calculatedResult.orderNumber = Integer.toString(index + 1);
+
+            // Номер извещения
+            calculatedResult.notificationNumber = allObjectsInfo.get(index).notificationNumber;
+
+            // Адрес объекта
+            calculatedResult.address = allObjectsInfo.get(index).address;
+
             // Площадь объекта
-            Float area = Float.parseFloat(allObjectsInfo.get(index).area);
+            float area = Float.parseFloat(allObjectsInfo.get(index).area);
+            calculatedResult.area = allObjectsInfo.get(index).area;
+
+            // Выплаты ренты в месяц
+            calculatedResult.monthlyRental = allObjectsInfo.get(index).monthlyRental;
+
+            // Срок аренды
+            calculatedResult.rentalPeriod = allObjectsInfo.get(index).rentalPeriod;
+
+            // Ссылка на объект на сайте
+            calculatedResult.webLink = allObjectsInfo.get(index).webLink;
+
+            // Дата торгов
+            calculatedResult.auctionData = allObjectsInfo.get(index).auctionData;
+
+            // Дата окончания подачи заявок
+            calculatedResult.closingApplicationsDate = allObjectsInfo.get(index).closingApplicationsDate;
+
+            // Информация о залоге
+            calculatedResult.guaranteeAmount = allObjectsInfo.get(index).guaranteeAmount;
+
 
             // Стоимость годовой страховки в Альфа-Страховании, рубли
             // зависит от площади в метрах - до 100 кв.м = 4000 рублей
@@ -53,9 +82,35 @@ class Calculation {
             calculatedResult.yearProfit = Float.toString(averageRental * area * profitMonths);
 
             // Расходы в месяц
+            int accountingService = 2000;       // Бухгалтерское обслуживание в месяц   // TODO: вынести в конфиг
+            int contractRegistration = 4000;        // Регистрация договора
+            int runningCost = 15000;         // затраты на запуск
+            calculatedResult.monthlyCost = Float.toString(
+                Float.parseFloat(allObjectsInfo.get(index).monthlyRental) +     // Стоимость аренды в месяц
+                monthlyHeating * area +        // Стоимость отопления в месяц
+                housingOfficeMaintenance * area +       // Обслуживание ЖЭКом в месяц
+                accountingService +         // Бухгалтерское обслуживание в месяц
+                (contractRegistration + runningCost) / Float.parseFloat(
+                        allObjectsInfo.get(index).rentalPeriod.replace(" лет", "")      // TODO: Здес проверить годы и месяцы!!!
+                ) * 12
+            );
 
+            // Коэффициент доходности
+            calculatedResult.profitMargin = Float.toString(
+                    ( averageRental * area * profitMonths - (Float.parseFloat(calculatedResult.monthlyCost) * 12 + Float.parseFloat(calculatedResult.yearInsurance)) )
+                     /
+                    (contractRegistration + runningCost)
+            );
 
+            // Безубыточность сдачи, руб/кв.м. в месяц
+            calculatedResult.lossFreeRental = Float.toString(
+                    (Float.parseFloat(calculatedResult.monthlyCost) * 12 / profitMonths) / area
+            );
 
+            // Выплаты ренты в год
+            calculatedResult.yearRental = Float.toString(
+                    Float.parseFloat(allObjectsInfo.get(index).monthlyRental) * 12
+            );
 
             // Добавить в результат
             bigCalculatedResult.add(calculatedResult);
