@@ -12,7 +12,6 @@ class Calculation {
 
         ArrayList<CalculatedResult> bigCalculatedResult = new ArrayList<>();
 
-//        for(ObjectInfo info: allObjectsInfo) {
         for (ObjectInfo objectInfo : allObjectsInfo) {
 
             CalculatedResult calculatedResult = new CalculatedResult();
@@ -50,9 +49,6 @@ class Calculation {
             // зависит от площади в метрах - до 100 кв.м = 4000 рублей
             if (area < 100) {
                 calculatedResult.yearInsurance = Float.toString(4000);        // TODO: Вынести в конфиг
-//                ObjectInfo object = allObjectsInfo.get(index);
-//                calculatedResult.yearInsurance = Float.toString(Float.parseFloat(object.area) * yearAllAreaInsurance);
-//                allObjectsInfo.set(index, object);
             } else {
                 log.error("Площадь объекта больше чем то, на что расчитана страховка");
             }
@@ -115,16 +111,14 @@ class Calculation {
             bigCalculatedResult.add(calculatedResult);
         }
 
-
-        // TODO: сделать switch для разных полей для сортировки
+        // TODO: сделать switch для разных полей сортировки
         // Отсортировать большой словарь по значению, указанному в конфиге
         bigCalculatedResult.sort(CalculatedResult.ProfitMarginComparator);
 
-
-        // Проставить порядковый номер в первом столбце  TODO:
-//        bigCalculatedResult orderNumber = Integer.toString(index + 1);
-
-
+        // Проставить порядковый номер в первом столбце
+        for(int i = 0; i < bigCalculatedResult.size(); i++) {
+            bigCalculatedResult.get(i).orderNumber = Integer.toString(i + 1);
+        }
 
         return bigCalculatedResult;
     }
