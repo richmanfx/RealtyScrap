@@ -20,6 +20,7 @@ public class RealtyScrap {
     public static void main(String[] args) {
 
         SelenideSetUp selenideSetUp = new SelenideSetUp();
+        HtmlReport report = new HtmlReport();
 
         selenideSetUp.selenideStart();
         log.debug("Selenide сконфигурирован");
@@ -32,6 +33,10 @@ public class RealtyScrap {
 
         log.debug("Рассчитываем все параметры для каждого объекта");
         ArrayList<CalculatedResult> calculatedResult = calculation(allObjectsInfo);
+
+        log.debug("Выводим результаты расчётов");
+        report.create(calculatedResult);
+
 
         log.debug("");
     }
