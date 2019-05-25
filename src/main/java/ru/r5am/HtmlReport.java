@@ -1,24 +1,21 @@
 package ru.r5am;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.hubspot.jinjava.Jinjava;
-import org.aeonbits.owner.ConfigFactory;
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
+import java.util.*;
 import java.io.File;
+import java.net.URL;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
+import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import com.hubspot.jinjava.Jinjava;
+import org.apache.commons.io.IOUtils;
+import com.google.common.collect.Maps;
+import org.apache.logging.log4j.Logger;
+import com.google.common.base.Charsets;
+import org.aeonbits.owner.ConfigFactory;
+import org.apache.logging.log4j.LogManager;
+
 
 class HtmlReport {
 
@@ -34,11 +31,16 @@ class HtmlReport {
         // Подготовить заголовки столбцов
         List<String> titles = getTableTitles();
 
+        // Подготовить параметры из конфига
+        Map<String, String> settings = getReportSettings();
+
         // Генерация отчёта
         Jinjava jinjava = new Jinjava();
         Map<String, Object> context = Maps.newHashMap();
 
         context.put("titles", titles);
+        context.put("settings", settings);
+
 //        context.a("realty", result.get(0));
 //        context.put("realty", new Integer[] { 23, 45, 56, 78 });
 
@@ -105,8 +107,38 @@ class HtmlReport {
     }
 
     /**
+     * Подготовить параметры из конфига для отчёта HTML
+     * @return Коллекция параметров
+     */
+    private Map<String, String> getReportSettings() {
+        Map<String, String> settings = new HashMap<>();
+
+        settings.put("minArea", Integer.toString(appConfig.minArea()));
+        settings.put("maxArea", Integer.toString(appConfig.maxArea()));
+        settings.put("minRentalPeriod", Integer.toString(appConfig.minRentalPeriod()));
+
+        settings.put("propertyType", appConfig.propertyType());
+        settings.put("contractType", appConfig.contractType());
+        settings.put("country", appConfig.country());
+        settings.put("propertyLocation", appConfig.propertyLocation());
+        settings.put("sortFieldName", appConfig.sortFieldName());
+
+        settings.put("averageRental", Integer.toString(appConfig.averageRental()));
+        settings.put("priorRepair", Integer.toString(appConfig.priorRepair()));
+        settings.put("contractRegistration", Integer.toString(appConfig.contractRegistration()));
+        settings.put("runningCost", Integer.toString(appConfig.runningCost()));
+        settings.put("yearlyInsurance", Integer.toString(appConfig.yearlyInsurance()));
+        settings.put("monthlyHeating", Integer.toString(appConfig.monthlyHeating()));
+        settings.put("housingOfficeMaintenance", Integer.toString(appConfig.housingOfficeMaintenance()));
+        settings.put("accountingService", Integer.toString(appConfig.accountingService()));
+        settings.put("requiredProfitMargin", Integer.toString(appConfig.requiredProfitMargin()));
+
+        return settings;
+    }
+
+    /**
      * Подготовить заголовки столбцов
-     * @return Массив заголовков для HTML таблицы
+     * @return Коллекция заголовков для HTML таблицы
      */
     private List<String> getTableTitles() {
         List<String> titles = new ArrayList<>();

@@ -38,8 +38,6 @@ public class RealtyScrap {
         log.debug("Выводим результаты расчётов");
         report.create(calculatedResult);
 
-
-        log.debug("");
     }
 
 }
