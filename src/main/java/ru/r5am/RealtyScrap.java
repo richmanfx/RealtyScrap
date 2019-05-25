@@ -4,6 +4,7 @@ package ru.r5am;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -17,7 +18,7 @@ public class RealtyScrap {
 
     private static final Logger log = LogManager.getRootLogger();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         SelenideSetUp selenideSetUp = new SelenideSetUp();
         HtmlReport report = new HtmlReport();

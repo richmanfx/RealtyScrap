@@ -16,4 +16,9 @@ public interface AppConfig extends Config {
     // Используемый браузер
     @DefaultValue("chrome")
     String selenideBrowser();
+
+    // Директория для отчётов
+    @DefaultValue("")
+    String reportDir();
+
 }

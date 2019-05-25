@@ -1,20 +1,80 @@
 package ru.r5am;
 
-import java.util.List;
+import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
+import com.hubspot.jinjava.Jinjava;
+import org.aeonbits.owner.ConfigFactory;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 class HtmlReport {
+
+    private static final Logger log = LogManager.getRootLogger();
+    private static AppConfig appConfig = ConfigFactory.create(AppConfig.class);
 
     /**
      * Создание HTML отчёта
      * @param result Результат расчётов всех параметров каждого объекта
      */
-    void create(ArrayList<CalculatedResult> result) {
+    void create(ArrayList<CalculatedResult> result) throws IOException {
 
         // Подготовить заголовки столбцов
         List<String> titles = getTableTitles();
 
         // Генерация отчёта
+        Jinjava jinjava = new Jinjava();
+        Map<String, Object> context = Maps.newHashMap();
+
+        context.put("titles", titles);
+
+        URL url = getClass().getResource(File.separator +"templates" + File.separator + "result-torgi-gov-ru.html");
+        String template = IOUtils.toString(url, Charsets.UTF_8);
+        log.info("Темплейт:\n{}", template);
+
+        String renderedTemplate = jinjava.render(template, context);
+
+        // Сохранить в файл
+        toFileSave(renderedTemplate);
+
+    }
+
+    /**
+     * Сохранить отчёт в файл
+     * @param renderedTemplate Отрендеренный отчёт
+     */
+    private void toFileSave(String renderedTemplate) throws IOException {
+
+        BufferedWriter bufferedWriter;
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(Calendar.getInstance().getTime());
+
+        File reportFile = new File(appConfig.reportDir() + File.separator + "realty_report-" + timeStamp + ".html");
+        if (!reportFile.exists()) {
+            boolean flag = reportFile.createNewFile();
+            if(flag) {
+                log.info("Файл '{}' созадан успешно", reportFile.getName());
+            } else {
+                log.error("Файл '{}' создать не удалось!", reportFile.getName());
+            }
+        }
+
+        FileWriter writer = new FileWriter(reportFile);
+        bufferedWriter = new BufferedWriter(writer);
+        bufferedWriter.write(renderedTemplate);
+        bufferedWriter.close();
+        writer.close();
 
     }
 

@@ -81,27 +81,23 @@ class Scraping {
         // Собрать иформацию об объектах на текущей странице
         ArrayList<ObjectInfo> objectsInfo = getOnePageObjectsInfo();
 
-//        for(ObjectInfo object: objectsInfo)
-//        log.info(object.notificationNumber + " / " +
-//                 object.area + " / " +
-//                 object.monthlyRental + " / " +
-//                 object.rentalPeriod + " / " +
-//                 object.webLink
-//        );
-
         // Добавить к основной коллекци
         allObjectsInfo.addAll(objectsInfo);
 
-        // Есть ли следующая страница
-        boolean nextPageExist = searchResultPage.existNextPage();
+        // **********************************************************
+        // Для отладки - скрапить только первую страницу закомментировать всё дальше
+        // **********************************************************
 
-        if(nextPageExist) { // Условие выхода из рекурсии - нет следующей страницы
-            // Перейти на следующую страницу
-            searchResultPage.goToNextPage();
-
-            // Рекурсия
-            getAllObjectsInfo();
-        }
+//        // Есть ли следующая страница
+//        boolean nextPageExist = searchResultPage.existNextPage();
+//
+//        if(nextPageExist) { // Условие выхода из рекурсии - нет следующей страницы
+//            // Перейти на следующую страницу
+//            searchResultPage.goToNextPage();
+//
+//            // Рекурсия
+//            getAllObjectsInfo();
+//        }
 
     }
 

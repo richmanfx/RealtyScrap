@@ -25,4 +25,5 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.9"
     compile "org.aeonbits.owner:owner:1.0.10"
     compile "org.projectlombok:lombok:1.18.8"
+    compile 'com.hubspot.jinjava:jinjava:2.5.0'
 }
