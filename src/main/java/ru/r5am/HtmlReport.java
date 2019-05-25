@@ -1,6 +1,7 @@
 package ru.r5am;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hubspot.jinjava.Jinjava;
 import org.aeonbits.owner.ConfigFactory;
@@ -38,6 +39,31 @@ class HtmlReport {
         Map<String, Object> context = Maps.newHashMap();
 
         context.put("titles", titles);
+//        context.a("realty", result.get(0));
+//        context.put("realty", new Integer[] { 23, 45, 56, 78 });
+
+        List<List<String>> ccc = new ArrayList<>();
+
+        List<String> aaa = new ArrayList<>();
+        aaa.add("a-Первый");
+        aaa.add("a-Второй");
+        aaa.add("a-Третий");
+        aaa.add("a-Четвёртый");
+        aaa.add("a-Пятый");
+
+        ccc.add(aaa);
+
+        List<String> bbb = new ArrayList<>();
+        aaa.add("b-Первый");
+        aaa.add("b-Второй");
+        aaa.add("b-Третий");
+        aaa.add("b-Четвёртый");
+        aaa.add("b-Пятый");
+
+        ccc.add(bbb);
+
+
+        context.put("realty", ccc);
 
         URL url = getClass().getResource(File.separator +"templates" + File.separator + "result-torgi-gov-ru.html");
         String template = IOUtils.toString(url, Charsets.UTF_8);

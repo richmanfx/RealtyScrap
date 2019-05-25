@@ -19,14 +19,14 @@ class CalculatedResult extends ObjectInfo {
     @Getter @Setter     String  yearProfit;                 // Доход в год
     @Getter @Setter     String  priorRepair;                // Предварительный ремонт
 
+
     // Компаратор сортирует по коэффициенту доходности "profitMargin"
     static Comparator<CalculatedResult> ProfitMarginComparator = new Comparator<>() {
-
         @Override
         public int compare(CalculatedResult result1, CalculatedResult result2) {
             return (Math.round(Float.parseFloat(result2.profitMargin)) -
                     Math.round(Float.parseFloat(result1.profitMargin)));
         }
-
     };
+
 }

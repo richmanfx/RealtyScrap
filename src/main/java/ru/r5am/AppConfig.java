@@ -21,4 +21,24 @@ public interface AppConfig extends Config {
     @DefaultValue("")
     String reportDir();
 
+    // Параметры объектов
+    int minArea();
+    int maxArea();
+    int minRentalPeriod();
+    String propertyType();
+    String contractType();
+    String country();
+    String propertyLocation();
+    String sortFieldName();
+    int averageRental();
+    int profitMonths();
+    int priorRepair();
+    int contractRegistration();
+    int runningCost();
+    int yearlyInsurance();
+    int monthlyHeating();
+    int housingOfficeMaintenance();
+    int accountingService();
+    int requiredProfitMargin();
+
 }

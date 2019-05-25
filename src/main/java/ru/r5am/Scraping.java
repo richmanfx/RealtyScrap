@@ -4,6 +4,7 @@ package ru.r5am;
 import java.util.List;
 import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
+import org.aeonbits.owner.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -16,6 +17,7 @@ class Scraping {
 
     private static final Logger log = LogManager.getRootLogger();
     private static ArrayList<ObjectInfo> allObjectsInfo = new ArrayList<>();
+    private static AppConfig appConfig = ConfigFactory.create(AppConfig.class);
 
     static ArrayList<ObjectInfo> scrap() {
 
@@ -162,28 +164,22 @@ class Scraping {
         rentalPage.setTradesType();
 
         // Указать тип имущества
-        String propertyType = "Помещение";  // TODO: вынести в конфиг
-        rentalPage.setAuctionType(propertyType);
+        rentalPage.setAuctionType(appConfig.propertyType());
 
         // Указать вид договора
-        String contractType = "Договор аренды";
-        rentalPage.setContractType(contractType);
+        rentalPage.setContractType(appConfig.contractType());
 
         // Указать страну
-        rentalPage.setCountry();
+        rentalPage.setCountry(appConfig.country());
 
         // Указать местоположение имущества
-        String PropertyLocation = "Москва (г)";   // TODO: вынести в конфиг
-        rentalPage.setPropertyLocation(PropertyLocation);
+        rentalPage.setPropertyLocation(appConfig.propertyLocation());
 
         // Указать диапазон площади объекта
-        int minArea = 10;          // TODO: вынести в конфиг
-        int maxArea = 75;
-        rentalPage.setObjectAreaRange(minArea, maxArea);
+        rentalPage.setObjectAreaRange(appConfig.minArea(), appConfig.maxArea());
 
         // Указать минимальный срок аренды
-        int minRentalPeriod = 5;        // TODO: вынести в конфиг
-        rentalPage.setRentalPeriod(minRentalPeriod);
+        rentalPage.setRentalPeriod(appConfig.minRentalPeriod());
     }
 
     /**

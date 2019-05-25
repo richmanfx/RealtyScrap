@@ -2,16 +2,12 @@ package ru.r5am.pageobjects;
 
 
 import org.openqa.selenium.By;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.sleep;
 import static com.codeborne.selenide.Condition.visible;
 
 
 public class RentalPage {
-
-    private static final Logger log = LogManager.getRootLogger();
 
     /**
      * Войти в расширенный поиск
@@ -50,8 +46,6 @@ public class RentalPage {
         // Кнопка "Выбрать"
         String buttonXpath = "//ins[text()='Выбрать']";
         $(By.xpath(buttonXpath)).click();
-
-
     }
 
     /**
@@ -72,20 +66,18 @@ public class RentalPage {
         // Кнопка "Выбрать"
         String buttonXpath = "//ins[text()='Выбрать']";     // TODO: Вынести в отдельный метод
         $(By.xpath(buttonXpath)).click();
-
     }
 
     /**
      * Указать страну
+     * @param country Название страны
      */
-    public void setCountry() {
-
+    public void setCountry(String country) {
         String labelSelectCountryXpath = "//label[text()='Страна размещения:']";
         $(By.xpath(labelSelectCountryXpath)).click();
 
-        String selectCountryXpath = "//option[@title='РОССИЯ']";
+        String selectCountryXpath = String.format("//option[@title='%s']", country);
         $(By.xpath(selectCountryXpath)).click();
-
     }
 
     /**
@@ -113,7 +105,6 @@ public class RentalPage {
      * @param maxArea Максимальная площадь объекта
      */
     public void setObjectAreaRange(int minArea, int maxArea) {
-
         String minFieldXpath = "//input[@name='extended:areaMeters:stringAreaMetersFrom']";
         $(By.xpath(minFieldXpath)).sendKeys(Integer.toString(minArea));
 
@@ -126,19 +117,16 @@ public class RentalPage {
      * @param minRentalPeriod Срок аренды в годах
      */
     public void setRentalPeriod(int minRentalPeriod) {
-
         String fieldXpath = "//input[@name='extended:propertyExtended:stringRentFrom']";
         $(By.xpath(fieldXpath)).sendKeys(Integer.toString(minRentalPeriod * 12));       // В месяцах
-
     }
 
     /**
      * Кликнуть на кнопке поиска
      */
     public void searchButtonClick() {
-
         String buttonXpath = "//ins[@id='lot_search']";
         $(By.xpath(buttonXpath)).click();
-
     }
+
 }
