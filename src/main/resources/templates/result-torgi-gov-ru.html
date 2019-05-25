@@ -46,12 +46,12 @@
     realty[0][3]: {{ realty[0][3] }}<br>
 
     <table class="real-table">
-        <caption>{{ config_file.PROPERTY_LOCATION }}, {{ config_file.CONTRACT_TYPE }}</caption>
+        <caption>{{ settings.propertyLocation }}, {{ settings.contractType }}</caption>
         <tr>{% for title in titles %}
             <th>{{title}}</th>{% endfor %}
         </tr>
 
-        {% for object in realty %}
+        {% for object in objects %}
         <tr>
             <td>{{object.orderNumber}}</td>
             <td><a href="{{object.webLink}}">{{object.notificationNumber}}</a></td>

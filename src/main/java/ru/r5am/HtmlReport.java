@@ -34,12 +34,17 @@ class HtmlReport {
         // Подготовить параметры из конфига
         Map<String, String> settings = getReportSettings();
 
+        // Подготовит результаты скрапинга для вывода в отчёт
+        List<Map<String, String>> objects = getReportObjects(result);
+
+
         // Генерация отчёта
         Jinjava jinjava = new Jinjava();
         Map<String, Object> context = Maps.newHashMap();
 
         context.put("titles", titles);
         context.put("settings", settings);
+        context.put("objects", objects);
 
 //        context.a("realty", result.get(0));
 //        context.put("realty", new Integer[] { 23, 45, 56, 78 });
@@ -107,9 +112,29 @@ class HtmlReport {
     }
 
     /**
-     * Подготовить параметры из конфига для отчёта HTML
-     * @return Коллекция параметров
+     * Подготовить результат скрапинга для отчёта HTML
+     * @param result Резудьтат скрапинга
+     * @return Коллекция результатов
      */
+
+    private List<Map<String, String>> getReportObjects(ArrayList<CalculatedResult> result) {
+
+        List<Map<String, String>> allObjects = new ArrayList<>();
+
+        for(CalculatedResult oneObjectResult: result) {
+
+            Map<String, String> object = new HashMap<>();
+
+            object.put("webLink", oneObjectResult.webLink);
+            object.put("notificationNumber", oneObjectResult.notificationNumber);
+
+            allObjects.add(object);
+        }
+
+        return allObjects;
+    }
+
+
     private Map<String, String> getReportSettings() {
         Map<String, String> settings = new HashMap<>();
 
