@@ -1,9 +1,8 @@
 package ru.r5am;
 
-
+import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import java.util.ArrayList;
 
 class Calculation {
 
@@ -14,45 +13,42 @@ class Calculation {
         ArrayList<CalculatedResult> bigCalculatedResult = new ArrayList<>();
 
 //        for(ObjectInfo info: allObjectsInfo) {
-        for(int index = 0; index < allObjectsInfo.size(); index++) {
+        for (ObjectInfo objectInfo : allObjectsInfo) {
 
             CalculatedResult calculatedResult = new CalculatedResult();
 
-            // Порядковый номер
-            calculatedResult.orderNumber = Integer.toString(index + 1);
-
             // Номер извещения
-            calculatedResult.notificationNumber = allObjectsInfo.get(index).notificationNumber;
+            calculatedResult.notificationNumber = objectInfo.notificationNumber;
 
             // Адрес объекта
-            calculatedResult.address = allObjectsInfo.get(index).address;
+            calculatedResult.address = objectInfo.address;
 
             // Площадь объекта
-            float area = Float.parseFloat(allObjectsInfo.get(index).area);
-            calculatedResult.area = allObjectsInfo.get(index).area;
+            float area = Float.parseFloat(objectInfo.area);
+            calculatedResult.area = objectInfo.area;
 
             // Выплаты ренты в месяц
-            calculatedResult.monthlyRental = allObjectsInfo.get(index).monthlyRental;
+            calculatedResult.monthlyRental = objectInfo.monthlyRental;
 
             // Срок аренды
-            calculatedResult.rentalPeriod = allObjectsInfo.get(index).rentalPeriod;
+            calculatedResult.rentalPeriod = objectInfo.rentalPeriod;
 
             // Ссылка на объект на сайте
-            calculatedResult.webLink = allObjectsInfo.get(index).webLink;
+            calculatedResult.webLink = objectInfo.webLink;
 
             // Дата торгов
-            calculatedResult.auctionData = allObjectsInfo.get(index).auctionData;
+            calculatedResult.auctionData = objectInfo.auctionData;
 
             // Дата окончания подачи заявок
-            calculatedResult.closingApplicationsDate = allObjectsInfo.get(index).closingApplicationsDate;
+            calculatedResult.closingApplicationsDate = objectInfo.closingApplicationsDate;
 
             // Информация о залоге
-            calculatedResult.guaranteeAmount = allObjectsInfo.get(index).guaranteeAmount;
+            calculatedResult.guaranteeAmount = objectInfo.guaranteeAmount;
 
 
             // Стоимость годовой страховки в Альфа-Страховании, рубли
             // зависит от площади в метрах - до 100 кв.м = 4000 рублей
-            if(area < 100) {
+            if (area < 100) {
                 calculatedResult.yearInsurance = Float.toString(4000);        // TODO: Вынести в конфиг
 //                ObjectInfo object = allObjectsInfo.get(index);
 //                calculatedResult.yearInsurance = Float.toString(Float.parseFloat(object.area) * yearAllAreaInsurance);
@@ -86,20 +82,22 @@ class Calculation {
             int contractRegistration = 4000;        // Регистрация договора
             int runningCost = 15000;         // затраты на запуск
             calculatedResult.monthlyCost = Float.toString(
-                Float.parseFloat(allObjectsInfo.get(index).monthlyRental) +     // Стоимость аренды в месяц
-                monthlyHeating * area +        // Стоимость отопления в месяц
-                housingOfficeMaintenance * area +       // Обслуживание ЖЭКом в месяц
-                accountingService +         // Бухгалтерское обслуживание в месяц
-                (contractRegistration + runningCost) / Float.parseFloat(
-                        allObjectsInfo.get(index).rentalPeriod.replace(" лет", "")      // TODO: Здес проверить годы и месяцы!!!
-                ) * 12
+                    Float.parseFloat(objectInfo.monthlyRental) +     // Стоимость аренды в месяц
+                            monthlyHeating * area +        // Стоимость отопления в месяц
+                            housingOfficeMaintenance * area +       // Обслуживание ЖЭКом в месяц
+                            accountingService +         // Бухгалтерское обслуживание в месяц
+                            (contractRegistration + runningCost) / Float.parseFloat(
+                                    objectInfo.rentalPeriod.replace(" лет", "")      // TODO: Здес проверить годы и месяцы!!!
+                            ) * 12
             );
 
             // Коэффициент доходности
-            calculatedResult.profitMargin = Float.toString(
-                    ( averageRental * area * profitMonths - (Float.parseFloat(calculatedResult.monthlyCost) * 12 + Float.parseFloat(calculatedResult.yearInsurance)) )
-                     /
-                    (contractRegistration + runningCost)
+            calculatedResult.profitMargin = Integer.toString(
+                    Math.round(
+                            (averageRental * area * profitMonths - (Float.parseFloat(calculatedResult.monthlyCost) * 12 + Float.parseFloat(calculatedResult.yearInsurance)))
+                                    /
+                                    (contractRegistration + runningCost)
+                    )
             );
 
             // Безубыточность сдачи, руб/кв.м. в месяц
@@ -109,12 +107,23 @@ class Calculation {
 
             // Выплаты ренты в год
             calculatedResult.yearRental = Float.toString(
-                    Float.parseFloat(allObjectsInfo.get(index).monthlyRental) * 12
+                    Float.parseFloat(objectInfo.monthlyRental) * 12
             );
+
 
             // Добавить в результат
             bigCalculatedResult.add(calculatedResult);
         }
+
+
+        // TODO: сделать switch для разных полей для сортировки
+        // Отсортировать большой словарь по значению, указанному в конфиге
+        bigCalculatedResult.sort(CalculatedResult.ProfitMarginComparator);
+
+
+        // Проставить порядковый номер в первом столбце  TODO:
+//        bigCalculatedResult orderNumber = Integer.toString(index + 1);
+
 
 
         return bigCalculatedResult;
