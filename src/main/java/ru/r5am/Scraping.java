@@ -51,7 +51,7 @@ class Scraping {
         for(int index=0; index < allObjectsInfo.size(); index++) {
 
             log.info(String.format(
-                    "Всего объектов: '%d', обрабатывается объект: '%d'", allObjectsInfo.size(), index + 1));
+                    "Объектов: всего: '%d', обрабатывается: '%d'", allObjectsInfo.size(), index + 1));
 
             // Перейти на страницу объекта недвижимости
             open(allObjectsInfo.get(index).webLink);
@@ -86,20 +86,24 @@ class Scraping {
         // Добавить к основной коллекци
         allObjectsInfo.addAll(objectsInfo);
 
-        // **********************************************************
-        // Для отладки - скрапить только первую страницу закомментировать всё дальше
-        // **********************************************************
+        // *******************************************************************************
+        // Для отладки: скрапить только первую страницу - закомментировать дальше
+        // *******************************************************************************
 
-//        // Есть ли следующая страница
-//        boolean nextPageExist = searchResultPage.existNextPage();
-//
-//        if(nextPageExist) { // Условие выхода из рекурсии - нет следующей страницы
-//            // Перейти на следующую страницу
-//            searchResultPage.goToNextPage();
-//
-//            // Рекурсия
-//            getAllObjectsInfo();
-//        }
+        // Есть ли следующая страница
+        boolean nextPageExist = searchResultPage.existNextPage();
+
+        if(nextPageExist) { // Условие выхода из рекурсии - нет следующей страницы
+            // Перейти на следующую страницу
+            searchResultPage.goToNextPage();
+
+            // Рекурсия
+            getAllObjectsInfo();
+        }
+
+        // *******************************************************************************
+        // Для отладки: скрапить только первую страницу - закомментировать до этого места
+        // *******************************************************************************
 
     }
 
@@ -130,7 +134,11 @@ class Scraping {
             ObjectInfo info = new ObjectInfo();
             info.notificationNumber = notices.get(index);
             info.area = areas.get(index).replace(" м²", "");
-            info.monthlyRental = rents.get(index).replace(",", ".").replace(" ", "").replace("руб.", "");
+            info.monthlyRental = Integer.toString(
+                    Math.round(
+                            Float.parseFloat(rents.get(index).replace(",", ".").replace(" ", "").replace("руб.", ""))
+                    )
+            );
             info.rentalPeriod = rentalPeriods.get(index);
             info.webLink = links.get(index);
 

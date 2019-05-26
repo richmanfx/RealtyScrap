@@ -39,12 +39,6 @@
 <br><br>
     <h1>Объекты недвижимости</h1>
 
-    realty: {{ realty }}<br>
-    realty.aaa: {{ realty.aaa }}<br>
-    realty.bbb: {{ realty.bbb }}<br>
-    realty[0][0]: {{ realty[0][0] }}<br>
-    realty[0][3]: {{ realty[0][3] }}<br>
-
     <table class="real-table">
         <caption>{{ settings.propertyLocation }}, {{ settings.contractType }}</caption>
         <tr>{% for title in titles %}
@@ -55,27 +49,27 @@
         <tr>
             <td>{{object.orderNumber}}</td>
             <td><a href="{{object.webLink}}">{{object.notificationNumber}}</a></td>
-            {% if object.profitMargin >= required_profit_margin %}
+            {% if object.profitMargin|int() >= object.requiredProfitMargin|int() %}
             <td class="gud-payback">{{object.profitMargin}}</td>
             {% else %}
             <td class="bad-payback">{{object.profitMargin}}</td>
             {% endif %}
             <td>{{object.address}}</td>
-            <td>{{object[4]}}</td>
-            <td>{{object[5]}}</td>
-            <td>{{object[6]}}</td>
-            <td>{{object[7]}}</td>
-            <td>{{object[8]}}</td>
-            <td>{{object[9]}}</td>
-            <td>{{object[10]}}</td>
-            <td>{{object[11]}}</td>
-            <td>{{object[12]}}</td>
-            <td>{{object[14]}}</td>
-            <td>{{object[14]}}</td>
-            <td>{{object[14]}}</td>
-            <td>{{object[14]}}</td>
-            <td>{{object[14]}}</td>
-            <td>{{object[14]}}</td>
+            <td>{{object.area}}</td>
+            <td>{{object.auctionData}}</td>
+            <td>{{object.closingApplicationsDate}}</td>
+            <td>{{object.guaranteeAmount}}</td>
+            <td>{{object.lossFreeRental}}</td>
+            <td>{{object.monthlyProfit}}</td>
+            <td>{{object.monthlyCost}}</td>
+            <td>{{object.monthlyRental}}</td>
+            <td>{{object.rentalPeriod}}</td>
+            <td>{{object.monthlyHeating}}</td>
+            <td>{{object.housingOfficeMaintenance}}</td>
+            <td>{{object.yearProfit}}</td>
+            <td>{{object.yearRental}}</td>
+            <td>{{object.yearInsurance}}</td>
+            <td>{{object.priorRepair}}</td>
         </tr>
         {% endfor %}
     </table>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 import org.aeonbits.owner.ConfigFactory;
 import org.apache.logging.log4j.LogManager;
+import org.apache.commons.lang3.StringUtils;
 
 class Calculation {
 
@@ -30,7 +31,7 @@ class Calculation {
             calculatedResult.area = objectInfo.area;
 
             // Выплаты ренты в месяц
-            calculatedResult.monthlyRental = objectInfo.monthlyRental;
+            calculatedResult.monthlyRental = spaceInsert(objectInfo.monthlyRental);
 
             // Срок аренды
             calculatedResult.rentalPeriod = objectInfo.rentalPeriod;
@@ -51,57 +52,69 @@ class Calculation {
             // Стоимость годовой страховки в Альфа-Страховании, рубли
             // зависит от площади в метрах - до 100 кв.м = 4000 рублей
             if (area < 100) {
-                calculatedResult.yearInsurance = Float.toString(appConfig.yearlyInsurance());        // TODO: Вынести в конфиг
+                calculatedResult.yearInsurance =
+                        spaceInsert(Integer.toString(Math.round(appConfig.yearlyInsurance())));
             } else {
                 log.error("Площадь объекта больше чем то, на что расчитана страховка");
             }
 
             // Стоимость предварительного ремонта всей площади
-            calculatedResult.priorRepair = Float.toString(appConfig.priorRepair() * area);
+            calculatedResult.priorRepair =
+                    spaceInsert(Integer.toString(Math.round(appConfig.priorRepair() * area)));
 
             // Стоимость отопления в месяц
-            calculatedResult.monthlyHeating = Float.toString(appConfig.monthlyHeating() * area);
+            calculatedResult.monthlyHeating =
+                    spaceInsert(Integer.toString(Math.round(appConfig.monthlyHeating() * area)));
 
             // Обслуживание ЖЭКом в месяц
-            calculatedResult.housingOfficeMaintenance = Float.toString(appConfig.housingOfficeMaintenance() * area);
+            calculatedResult.housingOfficeMaintenance =
+                    spaceInsert(Integer.toString(Math.round(appConfig.housingOfficeMaintenance() * area)));
 
             // Доход от аренды в месяц
-            calculatedResult.monthlyProfit = Float.toString(appConfig.averageRental() * area);
+            calculatedResult.monthlyProfit =
+                    spaceInsert(Integer.toString(Math.round(appConfig.averageRental() * area)));
 
             // Доход в год с учётом несдаваемых месяцев
-            calculatedResult.yearProfit = Float.toString(appConfig.averageRental() * area * appConfig.profitMonths());
+            calculatedResult.yearProfit =
+                    spaceInsert(Integer.toString(Math.round(
+                            appConfig.averageRental() * area * appConfig.profitMonths())));
 
             // Расходы в месяц
-            calculatedResult.monthlyCost = Float.toString(
-                    Float.parseFloat(objectInfo.monthlyRental) +     // Стоимость аренды в месяц
+            calculatedResult.monthlyCost =
+                    spaceInsert(Integer.toString(Math.round(
+                        Float.parseFloat(objectInfo.monthlyRental) +     // Стоимость аренды в месяц
                             appConfig.monthlyHeating() * area +        // Стоимость отопления в месяц
                             appConfig.housingOfficeMaintenance() * area +       // Обслуживание ЖЭКом в месяц
                             appConfig.accountingService() +         // Бухгалтерское обслуживание в месяц
                             (appConfig.contractRegistration() + appConfig.runningCost()) / Float.parseFloat(
                                     objectInfo.rentalPeriod.replace(" лет", "")      // TODO: Здес проверить годы и месяцы!!!
                             ) * 12
-            );
+                    )));
 
             // Коэффициент доходности
             calculatedResult.profitMargin = Integer.toString(
                     Math.round(
                             (appConfig.averageRental() * area * appConfig.profitMonths() -
-                                    (Float.parseFloat(calculatedResult.monthlyCost) * 12 +
-                                     Float.parseFloat(calculatedResult.yearInsurance)))
+                                    (Float.parseFloat(calculatedResult.monthlyCost.replace(" ", "")) * 12 +
+                                     Float.parseFloat(calculatedResult.yearInsurance.replace(" ", ""))))
                                     /
                                     (appConfig.contractRegistration() + appConfig.runningCost())
                     )
             );
 
             // Безубыточность сдачи, руб/кв.м. в месяц
-            calculatedResult.lossFreeRental = Float.toString(
-                    (Float.parseFloat(calculatedResult.monthlyCost) * 12 / appConfig.profitMonths()) / area
-            );
+            calculatedResult.lossFreeRental =
+                    spaceInsert(Integer.toString(Math.round(
+                        (
+                         Float.parseFloat(calculatedResult.monthlyCost.replace(" ", "")) * 12 / appConfig.profitMonths()
+                        )
+                         /
+                        area
+                    )));
 
             // Выплаты ренты в год
-            calculatedResult.yearRental = Float.toString(
-                    Float.parseFloat(objectInfo.monthlyRental) * 12
-            );
+            calculatedResult.yearRental = spaceInsert(Integer.toString(Math.round(
+                    Float.parseFloat(objectInfo.monthlyRental) * 12)));
 
 
             // Добавить в результат
@@ -126,6 +139,17 @@ class Calculation {
         }
 
         return bigCalculatedResult;
+    }
+
+    /**
+     * Вставляет в строку пробел поле третьего сивола с конца.
+     * Для визуального отделения единиц рублей от тысяч рублей.
+     * @param str Исходная строка
+     * @return Строка с пробелом
+     */
+    private static String spaceInsert(String str) {
+        int position = str.length()-3;
+        return StringUtils.overlay(str," ", position, position);
     }
 
 }

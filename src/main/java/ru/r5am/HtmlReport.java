@@ -34,7 +34,7 @@ class HtmlReport {
         // Подготовить параметры из конфига
         Map<String, String> settings = getReportSettings();
 
-        // Подготовит результаты скрапинга для вывода в отчёт
+        // Подготовить результаты скрапинга для вывода в отчёт
         List<Map<String, String>> objects = getReportObjects(result);
 
 
@@ -74,7 +74,7 @@ class HtmlReport {
 
         URL url = getClass().getResource(File.separator +"templates" + File.separator + "result-torgi-gov-ru.html");
         String template = IOUtils.toString(url, Charsets.UTF_8);
-        log.info("Темплейт:\n{}", template);
+//        log.info("Темплейт:\n{}", template);
 
         String renderedTemplate = jinjava.render(template, context);
 
@@ -125,8 +125,27 @@ class HtmlReport {
 
             Map<String, String> object = new HashMap<>();
 
+            object.put("orderNumber", oneObjectResult.orderNumber);
             object.put("webLink", oneObjectResult.webLink);
             object.put("notificationNumber", oneObjectResult.notificationNumber);
+            object.put("profitMargin", oneObjectResult.profitMargin);
+
+            object.put("address", oneObjectResult.address);
+            object.put("area", oneObjectResult.area);
+            object.put("auctionData", oneObjectResult.auctionData);
+            object.put("closingApplicationsDate", oneObjectResult.closingApplicationsDate);
+            object.put("guaranteeAmount", oneObjectResult.guaranteeAmount);
+            object.put("lossFreeRental", oneObjectResult.lossFreeRental);
+            object.put("monthlyProfit", oneObjectResult.monthlyProfit);
+            object.put("monthlyCost", oneObjectResult.monthlyCost);
+            object.put("monthlyRental", oneObjectResult.monthlyRental);
+            object.put("rentalPeriod", oneObjectResult.rentalPeriod);
+            object.put("monthlyHeating", oneObjectResult.monthlyHeating);
+            object.put("housingOfficeMaintenance", oneObjectResult.housingOfficeMaintenance);
+            object.put("yearProfit", oneObjectResult.yearProfit);
+            object.put("yearRental", oneObjectResult.yearRental);
+            object.put("yearInsurance", oneObjectResult.yearInsurance);
+            object.put("priorRepair", oneObjectResult.priorRepair);
 
             allObjects.add(object);
         }
@@ -185,7 +204,7 @@ class HtmlReport {
         titles.add("Стоимость отопления в месяц, рублей");
         titles.add("Обслуживание ЖЭКом в месяц, рублей");
 
-        titles.add("Доход в год, рублей");
+        titles.add("Доход в год, рублей&nbsp;");    // Костыльнул :-)
         titles.add("Выплата ренты в год, рублей");
         titles.add("Страховка за год, рублей");
         titles.add("Предварительный ремонт, рублей");

@@ -16,7 +16,7 @@ Configutation:
 
   Loggers:
     Root:
-      level: debug
+      level: info
       AppenderRef:
         - ref: "StdoutAppender"
 #        - ref: "FileAppender"
