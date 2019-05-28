@@ -47,29 +47,31 @@
 
         {% for object in objects %}
         <tr>
-            <td>{{object.orderNumber}}</td>
+            <td class="center-align">{{object.orderNumber}}</td>
             <td><a href="{{object.webLink}}">{{object.notificationNumber}}</a></td>
+
             {% if object.profitMargin|int() >= object.requiredProfitMargin|int() %}
             <td class="gud-payback">{{object.profitMargin}}</td>
             {% else %}
             <td class="bad-payback">{{object.profitMargin}}</td>
             {% endif %}
+
             <td>{{object.address}}</td>
-            <td>{{object.area}}</td>
+            <td class="right-align">{{object.area}}</td>
             <td>{{object.auctionData}}</td>
             <td>{{object.closingApplicationsDate}}</td>
             <td>{{object.guaranteeAmount}}</td>
-            <td>{{object.lossFreeRental}}</td>
-            <td>{{object.monthlyProfit}}</td>
-            <td>{{object.monthlyCost}}</td>
-            <td>{{object.monthlyRental}}</td>
-            <td>{{object.rentalPeriod}}</td>
-            <td>{{object.monthlyHeating}}</td>
-            <td>{{object.housingOfficeMaintenance}}</td>
-            <td>{{object.yearProfit}}</td>
-            <td>{{object.yearRental}}</td>
-            <td>{{object.yearInsurance}}</td>
-            <td>{{object.priorRepair}}</td>
+            <td class="right-align">{{object.lossFreeRental}}</td>
+            <td class="right-align">{{object.monthlyProfit}}</td>
+            <td class="right-align">{{object.monthlyCost}}</td>
+            <td class="right-align">{{object.monthlyRental}}</td>
+            <td class="center-align">{{object.rentalPeriod}}</td>
+            <td class="right-align">{{object.monthlyHeating}}</td>
+            <td class="right-align">{{object.housingOfficeMaintenance}}</td>
+            <td class="right-align">{{object.yearProfit}}</td>
+            <td class="right-align">{{object.yearRental}}</td>
+            <td class="right-align">{{object.yearInsurance}}</td>
+            <td class="right-align">{{object.priorRepair}}</td>
         </tr>
         {% endfor %}
     </table>
