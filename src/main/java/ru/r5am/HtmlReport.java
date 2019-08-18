@@ -46,9 +46,6 @@ class HtmlReport {
         context.put("settings", settings);
         context.put("objects", objects);
 
-//        context.a("realty", result.get(0));
-//        context.put("realty", new Integer[] { 23, 45, 56, 78 });
-
         List<List<String>> ccc = new ArrayList<>();
 
         List<String> aaa = new ArrayList<>();
@@ -74,8 +71,6 @@ class HtmlReport {
 
         URL url = getClass().getResource(File.separator +"templates" + File.separator + "result-torgi-gov-ru.html");
         String template = IOUtils.toString(url, Charsets.UTF_8);
-//        log.info("Темплейт:\n{}", template);
-
         String renderedTemplate = jinjava.render(template, context);
 
         // Сохранить в файл
@@ -89,8 +84,6 @@ class HtmlReport {
      */
     private void toFileSave(String renderedTemplate) throws IOException {
 
-        BufferedWriter bufferedWriter;
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(Calendar.getInstance().getTime());
 
         File reportFile = new File(appConfig.reportDir() + File.separator + "realty_report-" + timeStamp + ".html");
@@ -103,11 +96,16 @@ class HtmlReport {
             }
         }
 
-        FileWriter writer = new FileWriter(reportFile);
-        bufferedWriter = new BufferedWriter(writer);
-        bufferedWriter.write(renderedTemplate);
-        bufferedWriter.close();
-        writer.close();
+        try (
+                FileWriter writer = new FileWriter(reportFile);
+                BufferedWriter bufferedWriter = new BufferedWriter(writer)
+            ) {
+                bufferedWriter.write(renderedTemplate);
+        } catch (IOException ex) {
+            log.error("Ошибка записи отчёта в файл: {0}", ex);
+        }
+
+
 
     }
 
@@ -168,6 +166,7 @@ class HtmlReport {
         settings.put("sortFieldName", appConfig.sortFieldName());
 
         settings.put("averageRental", Integer.toString(appConfig.averageRental()));
+        settings.put("profitMonths", Integer.toString(appConfig.profitMonths()));
         settings.put("priorRepair", Integer.toString(appConfig.priorRepair()));
         settings.put("contractRegistration", Integer.toString(appConfig.contractRegistration()));
         settings.put("runningCost", Integer.toString(appConfig.runningCost()));
