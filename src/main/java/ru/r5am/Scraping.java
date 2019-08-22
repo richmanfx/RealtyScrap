@@ -26,7 +26,7 @@ class Scraping {
 
         // Определить количество найденных объектов
         int quantity = getObjectsQuantity();
-        log.info("Количество найденных объектов: {}", quantity);
+        log.info("Number of objects found: {}", quantity);
 
         // Собрать информацию по объектам на всех страницах
         getAllObjectsInfo();
@@ -34,7 +34,7 @@ class Scraping {
         // Собрать дополнительную информацию по каждому объекту
         getAllObjectAdditionalInfo();
 
-        log.info("Всего обработано объектов: {}", allObjectsInfo.size());
+        log.info("Total processed objects: {}", allObjectsInfo.size());
 
         return allObjectsInfo;
     }
@@ -51,7 +51,7 @@ class Scraping {
         for(int index=0; index < allObjectsInfo.size(); index++) {
 
             log.info(String.format(
-                    "Объектов: всего: '%d', обрабатывается: '%d'", allObjectsInfo.size(), index + 1));
+                    "Total objects: '%d', in processing: '%d'", allObjectsInfo.size(), index + 1));
 
             // Перейти на страницу объекта недвижимости
             open(allObjectsInfo.get(index).webLink);
@@ -204,7 +204,7 @@ class Scraping {
         // Дождаться отображения объектов
         boolean show = searchResultPage.isObjectsShow();
         if(!show) {
-            log.info("Объекты не нашлись");
+            log.info("Objects not found");
         }
     }
 }

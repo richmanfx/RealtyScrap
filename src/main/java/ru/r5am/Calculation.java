@@ -55,7 +55,7 @@ class Calculation {
                 calculatedResult.yearInsurance =
                         spaceInsert(Integer.toString(Math.round(appConfig.yearlyInsurance())));
             } else {
-                log.error("Площадь объекта больше чем то, на что расчитана страховка");
+                log.error("The area of the object is more than what the insurance is designed for");
             }
 
             // Стоимость предварительного ремонта всей площади

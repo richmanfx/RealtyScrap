@@ -90,9 +90,9 @@ class HtmlReport {
         if (!reportFile.exists()) {
             boolean flag = reportFile.createNewFile();
             if(flag) {
-                log.info("Файл '{}' созадан успешно", reportFile.getName());
+                log.info("File '{}' created successfully", reportFile.getName());
             } else {
-                log.error("Файл '{}' создать не удалось!", reportFile.getName());
+                log.error("File '{}' create failed!", reportFile.getName());
             }
         }
 
@@ -102,7 +102,7 @@ class HtmlReport {
             ) {
                 bufferedWriter.write(renderedTemplate);
         } catch (IOException ex) {
-            log.error("Ошибка записи отчёта в файл: {0}", ex);
+            log.error("Error writing report to file: {0}", ex);
         }
 
 

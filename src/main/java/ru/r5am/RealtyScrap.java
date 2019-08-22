@@ -24,18 +24,18 @@ public class RealtyScrap {
         HtmlReport report = new HtmlReport();
 
         selenideSetUp.selenideStart();
-        log.debug("Selenide сконфигурирован");
+        log.debug("Selenide is configured");
 
         open(appConfig.scrapUrl());
-        log.debug("Сайт открыт");
+        log.debug("Site is open");
 
-        log.debug("Начали скрапинг");
+        log.debug("Scraping started");
         ArrayList<ObjectInfo> allObjectsInfo = scrap();
 
-        log.debug("Рассчитываем все параметры для каждого объекта");
+        log.debug("Calculate all parameters for each object");
         ArrayList<CalculatedResult> calculatedResult = calculation(allObjectsInfo);
 
-        log.debug("Выводим результаты расчётов");
+        log.debug("Output the results of calculations");
         report.create(calculatedResult);
 
     }

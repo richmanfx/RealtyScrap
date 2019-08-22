@@ -25,9 +25,9 @@ public class SearchResultPage {
         String checkXpath = "//h2/span[contains(text(),'найдено лотов')]";
         try {
             $(By.xpath(checkXpath)).should(visible);
-            log.info("Лоты отобразились - удачный поиск");
+            log.info("Lots is displayed - a good search");
         } catch (Exception ex) {    // TODO: Сузить эксцептион
-            log.info("Лоты НЕ отобразились - объекты не нашлись");
+            log.info("Lots are NOT displayed - objects were not found");
             result = false;
         }
 
