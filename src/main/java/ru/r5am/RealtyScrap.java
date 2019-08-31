@@ -20,10 +20,9 @@ public class RealtyScrap {
 
     public static void main(String[] args) throws IOException {
 
-        SelenideSetUp selenideSetUp = new SelenideSetUp();
         HtmlReport report = new HtmlReport();
 
-        selenideSetUp.selenideStart();
+        SelenideSetUp.selenideStart();
         log.debug("Selenide is configured");
 
         open(appConfig.scrapUrl());

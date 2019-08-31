@@ -3,6 +3,7 @@ package ru.r5am;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Comparator;
+import java.util.Objects;
 
 class CalculatedResult extends ObjectInfo {
 
@@ -21,12 +22,44 @@ class CalculatedResult extends ObjectInfo {
 
 
     // Компаратор сортирует по коэффициенту доходности "profitMargin"
-    static Comparator<CalculatedResult> ProfitMarginComparator = new Comparator<>() {
-        @Override
-        public int compare(CalculatedResult result1, CalculatedResult result2) {
-            return (Math.round(Float.parseFloat(result2.profitMargin)) -
-                    Math.round(Float.parseFloat(result1.profitMargin)));
-        }
-    };
+    static Comparator<CalculatedResult> profitMarginComparator =
+            (result1, result2) -> (
+                    Math.round(Float.parseFloat(result2.profitMargin)) -
+                    Math.round(Float.parseFloat(result1.profitMargin))
+            );
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                orderNumber, profitMargin, lossFreeRental, yearRental, yearInsurance, monthlyCost,
+                monthlyHeating, housingOfficeMaintenance, monthlyProfit, yearProfit, priorRepair);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(this==obj)
+            return true;
+
+        if(obj==null)
+            return false;
+
+        if(!(obj instanceof CalculatedResult))
+            return false;
+
+        CalculatedResult object = (CalculatedResult) obj;
+
+        return orderNumber.equals(object.orderNumber) &&
+               profitMargin.equals(object.profitMargin) &&
+               lossFreeRental.equals(object.lossFreeRental) &&
+               yearRental.equals(object.yearRental) &&
+               yearInsurance.equals(object.yearInsurance) &&
+               monthlyCost.equals(object.monthlyCost) &&
+               monthlyHeating.equals(object.monthlyHeating) &&
+               housingOfficeMaintenance.equals(object.housingOfficeMaintenance) &&
+               monthlyProfit.equals(object.monthlyProfit) &&
+               yearProfit.equals(object.yearProfit) &&
+               priorRepair.equals(object.priorRepair);
+    }
 
 }

@@ -5,14 +5,16 @@ import org.aeonbits.owner.ConfigFactory;
 
 class SelenideSetUp {
 
+    SelenideSetUp() {
+    }
+
     static AppConfig appConfig = ConfigFactory.create(AppConfig.class);
 
-    void selenideStart() {
+    static void selenideStart() {
         Configuration.pageLoadStrategy = "normal";
-        Configuration.timeout = 1000 * 7;  // из секунд в мс
+        Configuration.timeout = 1000 * 7L;  // из секунд в мс
         Configuration.browser = appConfig.selenideBrowser();
         Configuration.browserSize = appConfig.browserSize();
-
     }
 
 }

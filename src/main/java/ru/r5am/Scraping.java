@@ -15,6 +15,9 @@ import ru.r5am.pageobjects.SearchResultPage;
 
 class Scraping {
 
+    Scraping() {
+    }
+
     private static final Logger log = LogManager.getRootLogger();
     private static ArrayList<ObjectInfo> allObjectsInfo = new ArrayList<>();
     private static AppConfig appConfig = ConfigFactory.create(AppConfig.class);
@@ -46,12 +49,9 @@ class Scraping {
 
         RealtyObjectPage realtyObjectPage = new RealtyObjectPage();
 
-        // TODO: Такая идея: Класс результатов большой наследовать от инфо маленького с переносом части данных!
-
         for(int index=0; index < allObjectsInfo.size(); index++) {
 
-            log.info(String.format(
-                    "Total objects: '%d', in processing: '%d'", allObjectsInfo.size(), index + 1));
+            log.info("Total objects: '{}', in processing: '{}'", allObjectsInfo.size(), index + 1);
 
             // Перейти на страницу объекта недвижимости
             open(allObjectsInfo.get(index).webLink);

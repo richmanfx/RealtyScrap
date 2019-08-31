@@ -8,6 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 
 class Calculation {
 
+    Calculation() {
+    }
+
     private static final Logger log = LogManager.getRootLogger();
     private static AppConfig appConfig = ConfigFactory.create(AppConfig.class);
 
@@ -53,7 +56,7 @@ class Calculation {
             // зависит от площади в метрах - до 100 кв.м = 4000 рублей
             if (area < 100) {
                 calculatedResult.yearInsurance =
-                        spaceInsert(Integer.toString(Math.round(appConfig.yearlyInsurance())));
+                        spaceInsert(Integer.toString(appConfig.yearlyInsurance()));
             } else {
                 log.error("The area of the object is more than what the insurance is designed for");
             }
@@ -124,13 +127,10 @@ class Calculation {
         // Отсортировать большой словарь по значению, указанному в конфиге
         switch (appConfig.sortFieldName()) {
             case "bar":
-//                bigCalculatedResult.sort(CalculatedResult.Bar);
-                break;
             case "foo":
-//                bigCalculatedResult.sort(CalculatedResult.Foo);
                 break;
             default:
-                bigCalculatedResult.sort(CalculatedResult.ProfitMarginComparator);
+                bigCalculatedResult.sort(CalculatedResult.profitMarginComparator);
         }
 
         // Проставить порядковый номер в первом столбце
