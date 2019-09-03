@@ -21,8 +21,8 @@ public class TestCalculation {
 
         objectInfo.notificationNumber = "123456/1234567/12";
         objectInfo.address = "г. Москва, ул. Тестовая, д. 7";
-        objectInfo.area = "72.2";
-        objectInfo.monthlyRental = "12345";
+        objectInfo.area = "31.5";
+        objectInfo.monthlyRental = "10329.38";
         objectInfo.rentalPeriod = "10 лет";
         objectInfo.webLink = "https://torgi.gov.ru";
         objectInfo.auctionData = "26.09.2019 13:00";
@@ -35,17 +35,17 @@ public class TestCalculation {
         List<CalculatedResult> expectedResult = new ArrayList<>();
         CalculatedResult calculatedResult = new CalculatedResult();
 
-        // Исходные параметры в результате
+        // Ожидаемые исходные параметры в результате
         calculatedResult.notificationNumber = "123456/1234567/12";
         log.info("Номер извещения (notificationNumber): '{}'", calculatedResult.notificationNumber);
 
         calculatedResult.address = "г. Москва, ул. Тестовая, д. 7";
         log.info("Адрес (address): '{}'", calculatedResult.address);
 
-        calculatedResult.area = "72.2";
+        calculatedResult.area = "31.5";
         log.info("Площадь (area): '{}'", calculatedResult.area);
 
-        calculatedResult.monthlyRental = "12 345";
+        calculatedResult.monthlyRental = "10 329.38";
         log.info("Стоимость аренды в месяц (monthlyRental): '{}'", calculatedResult.monthlyRental);
 
         calculatedResult.rentalPeriod = "10 лет";
@@ -67,7 +67,7 @@ public class TestCalculation {
         log.info("Информация про залог (guaranteeAmount): '{}'", calculatedResult.guaranteeAmount);
 
 
-        // Рассчитанные параметры объекта в результате
+        // Ожидаемые рассчитанные параметры объекта в результате
         calculatedResult.orderNumber = "1";
         log.info("Порядковый номер объекта (orderNumber): '{}'", calculatedResult.orderNumber);
 
@@ -77,30 +77,30 @@ public class TestCalculation {
         calculatedResult.lossFreeRental = " 679";         // TODO: Ведущий пробел в фактическом результате???
         log.info("Безубыточная сдача, руб/кв.м. в месяц (lossFreeRental): '{}'", calculatedResult.lossFreeRental);
 
-        calculatedResult.yearRental = "148 140";
+        calculatedResult.yearRental = "123 953";
         log.info("Выплаты ренты в год (yearRental): '{}'", calculatedResult.yearRental);
 
-        calculatedResult.yearInsurance = "4 000";
+        calculatedResult.yearInsurance = "11 340";
         log.info("Страховка за год (yearInsurance): '{}'", calculatedResult.yearInsurance);
 
         calculatedResult.monthlyCost = "40 827";
         log.info("Расходы в месяц (monthlyCost): '{}'", calculatedResult.monthlyCost);
 
-        calculatedResult.monthlyHeating = "1 661";
+        calculatedResult.monthlyHeating = " 725";
         log.info("Стоимость отопления в месяц (monthlyHeating): '{}'", calculatedResult.monthlyHeating);
 
-        calculatedResult.housingOfficeMaintenance = "2 022";
+        calculatedResult.housingOfficeMaintenance = " 851";
         log.info(
                 "Обслуживание ЖЭКом в месяц (housingOfficeMaintenance): '{}'",
                 calculatedResult.housingOfficeMaintenance);
 
-        calculatedResult.monthlyProfit = "93 282";
+        calculatedResult.monthlyProfit = "31 500";
         log.info("Доход в месяц (monthlyProfit): '{}'", calculatedResult.monthlyProfit);
 
-        calculatedResult.yearProfit = "932 824";
+        calculatedResult.yearProfit = "315 000";
         log.info("Доход в год (yearProfit): '{}'", calculatedResult.yearProfit);
 
-        calculatedResult.priorRepair = "21 660";
+        calculatedResult.priorRepair = " 0";
         log.info("Предварительный ремонт (priorRepair): '{}'", calculatedResult.priorRepair);
 
         expectedResult.add(calculatedResult);
@@ -115,8 +115,83 @@ public class TestCalculation {
 
         // Фактический результат
         List<CalculatedResult> actualResult = Calculation.calculation((ArrayList<ObjectInfo>) allObjectsInfo);
+        CalculatedResult real = actualResult.get(0);
 
-        // Проверка
-        Assert.assertEquals(actualResult.get(0), expectedResult.get(0));
+        // Ожидаемый результат
+        CalculatedResult expected = expectedResult.get(0);
+
+
+
+        // Проверки
+        boolean assertFlag = true;
+
+        if (!real.orderNumber.equals(expected.orderNumber)) {
+            log.error("Порядковый номер объекта не равен ожидаемому. Реальный: '{}'. Ожидаемый '{}'.",
+                    real.orderNumber, expected.orderNumber);
+            assertFlag = false;
+        }
+
+        if (!real.profitMargin.equals(expected.profitMargin)) {
+            log.error("Коэффициент доходности не равен ожидаемому. Реальный: '{}'. Ожидаемый '{}'.",
+                       real.profitMargin, expected.profitMargin);
+            assertFlag = false;
+        }
+
+        if (!real.lossFreeRental.equals(expected.lossFreeRental)) {
+            log.error("Безубыточная сдача в месяц не равна ожидаемой. Реальная: '{}'. Ожидаемая '{}'.",
+                    real.lossFreeRental, expected.lossFreeRental);
+            assertFlag = false;
+        }
+
+        if (!real.yearRental.equals(expected.yearRental)) {
+            log.error("Выплата ренты в год не равна ожидаемой. Реальная: '{}'. Ожидаемая '{}'.",
+                    real.yearRental, expected.yearRental);
+            assertFlag = false;
+        }
+
+        if (!real.yearInsurance.equals(expected.yearInsurance)) {
+            log.error("Страховка за год не равна ожидаемой. Реальная: '{}'. Ожидаемая '{}'.",
+                    real.yearInsurance, expected.yearInsurance);
+            assertFlag = false;
+        }
+
+        if (!real.monthlyCost.equals(expected.monthlyCost)) {
+            log.error("Расходы в месяц не равны ожидаемым. Реальные: '{}'. Ожидаемые '{}'.",
+                    real.monthlyCost, expected.monthlyCost);
+            assertFlag = false;
+        }
+
+        if (!real.monthlyHeating.equals(expected.monthlyHeating)) {
+            log.error("Стоимость отопления в месяц не равна ожидаемой. Реальная: '{}'. Ожидаемая '{}'.",
+                    real.monthlyHeating, expected.monthlyHeating);
+            assertFlag = false;
+        }
+
+        if (!real.housingOfficeMaintenance.equals(expected.housingOfficeMaintenance)) {
+            log.error("Обслуживание ЖЭКом в месяц не равно ожидаемому. Реальное: '{}'. Ожидаемое '{}'.",
+                    real.housingOfficeMaintenance, expected.housingOfficeMaintenance);
+            assertFlag = false;
+        }
+
+        if (!real.monthlyProfit.equals(expected.monthlyProfit)) {
+            log.error("Доход в месяц не равен ожидаемому. Реальный: '{}'. Ожидаемый '{}'.",
+                    real.monthlyProfit, expected.monthlyProfit);
+            assertFlag = false;
+        }
+
+        if (!real.yearProfit.equals(expected.yearProfit)) {
+            log.error("Доход в год не равен ожидаемому. Реальный: '{}'. Ожидаемый '{}'.",
+                    real.yearProfit, expected.yearProfit);
+            assertFlag = false;
+        }
+
+        if (!real.priorRepair.equals(expected.priorRepair)) {
+            log.error("Затраты на предварительный ремонт не равны ожидаемым. Реальные: '{}'. Ожидаемые '{}'.",
+                    real.priorRepair, expected.priorRepair);
+            assertFlag = false;
+        }
+
+        assert assertFlag;
+
     }
 }

@@ -35,7 +35,8 @@ public interface AppConfig extends Config {
     int priorRepair();
     int contractRegistration();
     int runningCost();
-    int yearlyInsurance();
+//    int yearlyInsurance();
+    int insurance1metre();
     int monthlyHeating();
     int housingOfficeMaintenance();
     int accountingService();

@@ -25,7 +25,7 @@ class Scraping {
     static ArrayList<ObjectInfo> scrap() {
 
         setSearchFilters();     // Выставить фильтры поиска
-        search();        // Искать
+        search();           // Искать
 
         // Определить количество найденных объектов
         int quantity = getObjectsQuantity();
@@ -121,12 +121,16 @@ class Scraping {
 
         // Извещения
         List<String> notices = searchResultPage.getNoticeNumbers();
+
         // Площади объектов
         List<String> areas = searchResultPage.getAreas();
+
         // Стоимость аренды в месяц
         List<String> rents = searchResultPage.getRents();
+
         // Срок аренды
         List<String> rentalPeriods = searchResultPage.getRentalPeriods();
+
         // Ссылка для просмотра
         List<String> links = searchResultPage.getLinks();
 

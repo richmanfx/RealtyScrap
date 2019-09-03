@@ -170,7 +170,9 @@ class HtmlReport {
         settings.put("priorRepair", Integer.toString(appConfig.priorRepair()));
         settings.put("contractRegistration", Integer.toString(appConfig.contractRegistration()));
         settings.put("runningCost", Integer.toString(appConfig.runningCost()));
-        settings.put("yearlyInsurance", Integer.toString(appConfig.yearlyInsurance()));
+
+        settings.put("insurance1metre", Integer.toString(appConfig.insurance1metre()));
+
         settings.put("monthlyHeating", Integer.toString(appConfig.monthlyHeating()));
         settings.put("housingOfficeMaintenance", Integer.toString(appConfig.housingOfficeMaintenance()));
         settings.put("accountingService", Integer.toString(appConfig.accountingService()));
@@ -188,25 +190,25 @@ class HtmlReport {
 
         titles.add("N");
         titles.add("Номер извещения");
-        titles.add("Коэфф. доход- ности");
+        titles.add("Коэфф. доходности");
         titles.add("Адрес");
-        titles.add("Пло- щадь, кв.м");
+        titles.add("Площадь, кв.м");
         titles.add("Дата торгов");
         titles.add("Дата окончания подачи заявок");
         titles.add("Сумма залога");
-        titles.add("Безубы- точная сдача, руб/кв.м. в мес.");
+        titles.add("Безубыточная сдача, руб/кв.м. в мес.");
 
         titles.add("Доход в месяц, руб.");
         titles.add("Расходы в месяц, руб.");
         titles.add("Выплата ренты в месяц, руб.");
         titles.add("Срок аренды");
-        titles.add("Стои- мость отоп- ления в месяц, руб.");
-        titles.add("Обслу- живание ЖЭКом в месяц, руб.");
+        titles.add("Стоимость отоп- ления в месяц, руб.");
+        titles.add("Обслуживание ЖЭКом в месяц, руб.");
 
         titles.add("Доход в год, рублей&nbsp;");    // Костыльнул :-)
         titles.add("Выплата ренты в год, руб.");
-        titles.add("Стра- ховка за год, руб.");
-        titles.add("Предва- ритель- ный ремонт, руб.");
+        titles.add("Страховка за год, руб.");
+        titles.add("Предварительный ремонт, руб.");
 
         return titles;
     }

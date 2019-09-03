@@ -7,7 +7,7 @@ Configutation:
       target: SYSTEM_OUT
       PatternLayout:
         charset: "UTF-8"
-        pattern: "============------->   %d{HH:mm:ss XXX} %-5p %c.java:%L - %m%n"
+        pattern: "=--->   %d{HH:mm:ss XXX} %-5p %c.java:%L - %m%n"
     File:
       name: FileAppender
       fileName: "logs/RealtyScrap.log"

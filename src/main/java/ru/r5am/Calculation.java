@@ -51,15 +51,9 @@ class Calculation {
             // Информация о залоге
             calculatedResult.guaranteeAmount = objectInfo.guaranteeAmount;
 
-
-            // Стоимость годовой страховки в Альфа-Страховании, рубли
-            // зависит от площади в метрах - до 100 кв.м = 4000 рублей
-            if (area < 100) {
-                calculatedResult.yearInsurance =
-                        spaceInsert(Integer.toString(appConfig.yearlyInsurance()));
-            } else {
-                log.error("The area of the object is more than what the insurance is designed for");
-            }
+            // Стоимость страховки всей площади в год
+            calculatedResult.yearInsurance =
+                    spaceInsert(Integer.toString(12 * Math.round(appConfig.insurance1metre() * area)));
 
             // Стоимость предварительного ремонта всей площади
             calculatedResult.priorRepair =
@@ -82,26 +76,37 @@ class Calculation {
                     spaceInsert(Integer.toString(Math.round(
                             appConfig.averageRental() * area * appConfig.profitMonths())));
 
-            // Расходы в месяц
+            // Расходы в месяц в месте с первоначальными на весь срок аренды (Регистрация договора и Затраты на запуск)
+            log.debug("Срок аренды: {}", objectInfo.rentalPeriod);    // Проверить в годах ли срок аренды приходит
             calculatedResult.monthlyCost =
                     spaceInsert(Integer.toString(Math.round(
-                        Float.parseFloat(objectInfo.monthlyRental) +     // Стоимость аренды в месяц
-                            appConfig.monthlyHeating() * area +        // Стоимость отопления в месяц
-                            appConfig.housingOfficeMaintenance() * area +       // Обслуживание ЖЭКом в месяц
-                            appConfig.accountingService() +         // Бухгалтерское обслуживание в месяц
-                            (appConfig.contractRegistration() + appConfig.runningCost()) / Float.parseFloat(
-                                    objectInfo.rentalPeriod.replace(" лет", "")      // TODO: Здес проверить годы и месяцы!!!
-                            ) * 12
+                            Float.parseFloat(objectInfo.monthlyRental) +    // Стоимость аренды в месяц
+                            appConfig.monthlyHeating() * area +             // Стоимость отопления в месяц
+                            appConfig.housingOfficeMaintenance() * area +   // Обслуживание ЖЭКом в месяц
+                            appConfig.accountingService() +                 // Бухгалтерское обслуживание в месяц
+                            appConfig.insurance1metre() * area +       // Страховка в месяц
+
+                            (appConfig.contractRegistration() + appConfig.runningCost()) /
+                            Float.parseFloat(objectInfo.rentalPeriod.replace(" лет", "")) /
+                            12      // Делим на 12, так как срок аренды в годах
                     )));
+
 
             // Коэффициент доходности
             calculatedResult.profitMargin = Integer.toString(
                     Math.round(
-                            (appConfig.averageRental() * area * appConfig.profitMonths() -
-                                    (Float.parseFloat(calculatedResult.monthlyCost.replace(" ", "")) * 12 +
-                                     Float.parseFloat(calculatedResult.yearInsurance.replace(" ", ""))))
-                                    /
-                                    (appConfig.contractRegistration() + appConfig.runningCost())
+
+//                            (appConfig.averageRental() * area * appConfig.profitMonths() -
+//                                    (Float.parseFloat(calculatedResult.monthlyCost.replace(" ", "")) * 12 +
+//                                     Float.parseFloat(calculatedResult.yearInsurance.replace(" ", ""))))
+//                                    /
+//                                    (appConfig.contractRegistration() + appConfig.runningCost())
+
+                            (Float.parseFloat(calculatedResult.yearProfit.replace(" ", ""))
+                            -
+                            12 * Float.parseFloat(calculatedResult.monthlyCost.replace(" ", "")))
+                            /
+                            (appConfig.contractRegistration() + appConfig.runningCost())
                     )
             );
 
