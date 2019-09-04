@@ -177,6 +177,7 @@ class HtmlReport {
         settings.put("housingOfficeMaintenance", Integer.toString(appConfig.housingOfficeMaintenance()));
         settings.put("accountingService", Integer.toString(appConfig.accountingService()));
         settings.put("requiredProfitMargin", Integer.toString(appConfig.requiredProfitMargin()));
+        log.info("Приемлемый коэффициент доходности: {}", appConfig.requiredProfitMargin());
 
         return settings;
     }
@@ -202,7 +203,7 @@ class HtmlReport {
         titles.add("Расходы в месяц, руб.");
         titles.add("Выплата ренты в месяц, руб.");
         titles.add("Срок аренды");
-        titles.add("Стоимость отоп- ления в месяц, руб.");
+        titles.add("Стоимость отопления в месяц, руб.");
         titles.add("Обслуживание ЖЭКом в месяц, руб.");
 
         titles.add("Доход в год, рублей&nbsp;");    // Костыльнул :-)

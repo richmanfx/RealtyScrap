@@ -50,7 +50,7 @@
             <td class="center-align">{{object.orderNumber}}</td>
             <td><a href="{{object.webLink}}">{{object.notificationNumber}}</a></td>
 
-            {% if object.profitMargin|int() >= object.requiredProfitMargin|int() %}
+            {% if object.profitMargin|int() >= settings.requiredProfitMargin|int() %}
             <td class="gud-payback">{{object.profitMargin}}</td>
             {% else %}
             <td class="bad-payback">{{object.profitMargin}}</td>
