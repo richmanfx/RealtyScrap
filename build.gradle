@@ -1,13 +1,14 @@
 group 'ru.r5am'
 version '1.0'
 
-apply plugin: 'java'
+apply plugin: "java"
 apply plugin: 'application'
 
 defaultTasks "run"
 
-mainClassName = 'ru.r5am.RealtyScrap'
-sourceCompatibility = JavaVersion.VERSION_11
+mainClassName = "ru.r5am.RealtyScrap"
+sourceCompatibility = JavaVersion.VERSION_1_8
+
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 
