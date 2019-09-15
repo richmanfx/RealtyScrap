@@ -20,10 +20,11 @@ repositories {
 
 
 dependencies {
-    compile "com.codeborne:selenide:5.2.3"
-    compile "org.apache.logging.log4j:log4j-slf4j-impl:2.11.2"
-    compile "org.apache.logging.log4j:log4j-core:2.11.2"
-    compile "org.apache.logging.log4j:log4j-jul:2.11.2"
+    compile "com.codeborne:selenide:+"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:+"
+    compile "org.apache.logging.log4j:log4j-core:+"
+    compile "org.apache.logging.log4j:log4j-api:+"
+    compile "org.apache.logging.log4j:log4j-jul:+"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9"
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.9"
     compile "org.aeonbits.owner:owner:1.0.10"

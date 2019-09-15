@@ -1,12 +1,9 @@
 package ru.r5am;
 
 
+import java.io.*;
 import java.util.*;
-import java.io.File;
 import java.net.URL;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 import com.hubspot.jinjava.Jinjava;
 import org.apache.commons.io.IOUtils;
@@ -69,7 +66,8 @@ class HtmlReport {
 
         context.put("realty", ccc);
 
-        URL url = getClass().getResource(File.separator +"templates" + File.separator + "result-torgi-gov-ru.html");
+        URL url = getClass().getResource( "/templates/result-torgi-gov-ru.html");
+        log.info("Template uri: {}", url);
         String template = IOUtils.toString(url, Charsets.UTF_8);
         String renderedTemplate = jinjava.render(template, context);
 
@@ -82,17 +80,21 @@ class HtmlReport {
      * Сохранить отчёт в файл
      * @param renderedTemplate Отрендеренный отчёт
      */
-    private void toFileSave(String renderedTemplate) throws IOException {
+    private void toFileSave(String renderedTemplate) {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(Calendar.getInstance().getTime());
 
-        File reportFile = new File(appConfig.reportDir() + File.separator + "realty_report-" + timeStamp + ".html");
+        String pathName = appConfig.reportDir() + File.separator + "realty_report-" + timeStamp + ".html";
+        File reportFile = new File(pathName);
         if (!reportFile.exists()) {
-            boolean flag = reportFile.createNewFile();
-            if(flag) {
+            boolean createFileFlag = false;
+            try {
+                createFileFlag = reportFile.createNewFile();
+            } catch (IOException ex) {
+                log.error("Create file error '{}'", pathName);
+            }
+            if(createFileFlag) {
                 log.info("File '{}' created successfully", reportFile.getName());
-            } else {
-                log.error("File '{}' create failed!", reportFile.getName());
             }
         }
 
@@ -102,7 +104,7 @@ class HtmlReport {
             ) {
                 bufferedWriter.write(renderedTemplate);
         } catch (IOException ex) {
-            log.error("Error writing report to file: {0}", ex);
+            log.error("Error writing report to file: {}", ex.toString());
         }
 
 
@@ -177,7 +179,7 @@ class HtmlReport {
         settings.put("housingOfficeMaintenance", Integer.toString(appConfig.housingOfficeMaintenance()));
         settings.put("accountingService", Integer.toString(appConfig.accountingService()));
         settings.put("requiredProfitMargin", Integer.toString(appConfig.requiredProfitMargin()));
-        log.info("Приемлемый коэффициент доходности: {}", appConfig.requiredProfitMargin());
+        log.info("Tolerable/required profit margin: {}", appConfig.requiredProfitMargin());
 
         return settings;
     }
