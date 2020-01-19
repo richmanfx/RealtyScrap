@@ -78,19 +78,24 @@ class Calculation {
 
             // Расходы в месяц в месте с первоначальными на весь срок аренды (Регистрация договора и Затраты на запуск)
             log.debug("Срок аренды: {}", objectInfo.rentalPeriod);    // Проверить в годах ли срок аренды приходит
-            calculatedResult.monthlyCost =
-                    spaceInsert(Integer.toString(Math.round(
-                            Float.parseFloat(objectInfo.monthlyRental) +    // Стоимость аренды в месяц
-                            appConfig.monthlyHeating() * area +             // Стоимость отопления в месяц
-                            appConfig.housingOfficeMaintenance() * area +   // Обслуживание ЖЭКом в месяц
-                            appConfig.accountingService() +                 // Бухгалтерское обслуживание в месяц
-                            appConfig.insurance1metre() * area +       // Страховка в месяц
 
-                            (appConfig.contractRegistration() + appConfig.runningCost()) /
-                            Float.parseFloat(objectInfo.rentalPeriod.replace(" лет", "")) /
-                            12      // Делим на 12, так как срок аренды в годах
-                    )));
+            try {
+                calculatedResult.monthlyCost =
+                        spaceInsert(Integer.toString(Math.round(
+                                Float.parseFloat(objectInfo.monthlyRental) +    // Стоимость аренды в месяц
+                                        appConfig.monthlyHeating() * area +             // Стоимость отопления в месяц
+                                        appConfig.housingOfficeMaintenance() * area +   // Обслуживание ЖЭКом в месяц
+                                        appConfig.accountingService() +                 // Бухгалтерское обслуживание в месяц
+                                        appConfig.insurance1metre() * area +       // Страховка в месяц
 
+                                        (appConfig.contractRegistration() + appConfig.runningCost()) /
+                                                Float.parseFloat(objectInfo.rentalPeriod.replace(" лет", "")) /
+                                                12      // Делим на 12, так как срок аренды в годах
+                        )));
+            } catch (NumberFormatException ex) {
+                log.error("Bad rental period: {}", objectInfo.rentalPeriod);
+                calculatedResult.monthlyCost = "9999999999";
+            }
 
             // Коэффициент доходности
             calculatedResult.profitMargin = Integer.toString(
